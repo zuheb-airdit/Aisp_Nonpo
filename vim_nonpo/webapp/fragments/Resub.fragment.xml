@@ -1,0 +1,53 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="commentDialog3"
+        title="Resubmit Comment"
+        draggable="true"
+        resizable="true"
+        contentWidth="30rem"
+        contentHeight="auto"
+        type="Message"
+    >
+        <VBox
+            justifyContent="Center"
+            alignItems="Stretch"
+        >
+            <Text
+                text="Please enter a comment before submitting (max 500 characters):"
+                class="sapUiSmallMarginBottom sapUiTinyMarginTop"
+                wrapping="true"
+            />
+
+            <TextArea
+                id="commentTextArea3"
+                rows="6"
+                growing="true"
+                growingMaxLines="10"
+                width="100%"
+                maxLength="500"
+                placeholder="Type your comment here..."
+                class="sapUiTinyMarginTop"
+            />
+        </VBox>
+
+        <beginButton>
+            <Button
+                text="Submit"
+                type="Emphasized"
+                icon="sap-icon://accept"
+                press=".onCommentResub"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                type="Reject"
+                icon="sap-icon://decline"
+                press=".onCommentCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

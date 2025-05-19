@@ -1,0 +1,154 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.vim.vimnspo",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.17.4",
+      "toolsId": "6f4eed00-c43e-4c8b-885d-c3182afbdcc8"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "odata/v2/non-po-vim/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "vimnspo_obj-vimnspo_act": {
+          "semanticObject": "vimnspo_obj",
+          "action": "vimnspo_act",
+          "title": "{{vimnspo_obj-vimnspo_act.flpTitle}}",
+          "subTitle": "{{vimnspo_obj-vimnspo_act.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.135.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.vim.vimnspo.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "async": true,
+        "path": "com.vim.vimnspo.view",
+        "viewPath": "com.vim.vimnspo.view"
+      },
+      "routes": [
+        {
+          "name": "Routeindex",
+          "pattern": "",
+          "target": ["Targetindex"]
+        },
+        {
+          "name": "Routesecond",
+          "pattern": "Routesecond",
+          "target": ["Targetsecond"]
+        },
+        {
+          "name": "Routethird",
+          "pattern": "third/{requestNumber}",
+          "target": ["Targetthird"]
+        }
+      ],
+      "targets": {
+        "Targetindex": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "id": "index",
+          "name": "index"
+        },
+        "Targetsecond": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "id": "second",
+          "name": "second"
+        },
+        "Targetthird": {
+          "id": "third",
+          "name": "third"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.vim.vimnspo.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "vimnpo"
+  }
+}

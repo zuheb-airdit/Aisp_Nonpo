@@ -1,0 +1,245 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Start vimnspo",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vimnspo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--open",
+        "test/flpSandbox.html#comvimvimnspo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "DEBUG": "--inspect",
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP/vimnspo\"}"
+      }
+    },
+    {
+      "name": "Start vimnspo Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vimnspo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-mock.yaml",
+        "--open",
+        "test/flpSandbox.html#comvimvimnspo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP/vimnspo\"}"
+      }
+    },
+    {
+      "name": "Start vimnspo Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vimnspo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-local.yaml",
+        "--open",
+        "test/flpSandbox.html#comvimvimnspo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP/vimnspo\"}"
+      }
+    },
+    {
+      "name": "Start vim_nonpo",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_nonpo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--open",
+        "test/flpSandbox.html#comnonpovimnonpo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "DEBUG": "--inspect",
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_nonpo\"}"
+      }
+    },
+    {
+      "name": "Start vim_nonpo Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_nonpo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-local.yaml",
+        "--open",
+        "test/flpSandbox.html#comnonpovimnonpo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_nonpo\"}"
+      }
+    },
+    {
+      "name": "Start vim_nonpo Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_nonpo",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-mock.yaml",
+        "--open",
+        "test/flpSandbox.html#comnonpovimnonpo-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_nonpo\"}"
+      }
+    },
+    {
+      "name": "Start vim_invoice_approver",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_invoice_approver",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--open",
+        "test/flpSandbox.html#cominvoiceappviminvoiceapprove-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "DEBUG": "--inspect",
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_invoice_approver\"}"
+      }
+    },
+    {
+      "name": "Start vim_invoice_approver Local",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_invoice_approver",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-local.yaml",
+        "--open",
+        "test/flpSandbox.html#cominvoiceappviminvoiceapprove-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_invoice_approver\"}"
+      }
+    },
+    {
+      "name": "Start vim_invoice_approver Mock",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/vim_invoice_approver",
+      "runtimeExecutable": "npx",
+      "windows": {
+        "runtimeExecutable": "npx.cmd"
+      },
+      "runtimeArgs": [
+        "fiori",
+        "run"
+      ],
+      "args": [
+        "--config",
+        "./ui5-mock.yaml",
+        "--open",
+        "test/flpSandbox.html#cominvoiceappviminvoiceapprove-display"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std",
+      "env": {
+        "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/AISP_nonpo/vim_invoice_approver\"}"
+      }
+    }
+  ]
+}

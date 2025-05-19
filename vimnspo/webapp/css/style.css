@@ -1,0 +1,12 @@
+.noWrapText {
+  text-wrap: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.RemoveDoc{
+  display: flex;
+  justify-content: end;
+  justify-items: end;
+}

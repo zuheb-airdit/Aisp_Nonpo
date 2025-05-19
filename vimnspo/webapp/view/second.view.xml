@@ -1,0 +1,147 @@
+<mvc:View
+    controllerName="com.vim.vimnspo.controller.second"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
+    xmlns:upload="sap.m.upload"
+    xmlns:plugins="sap.m.plugins"
+>
+    <Page
+        title="Edit Details"
+        enableScrolling="false"
+        showHeader="false"
+    >
+        <content>
+            <l:Splitter width="100%">
+                <Page
+                    enableScrolling="false"
+                    showHeader="false"
+                >
+                    <layoutData>
+                        <l:SplitterLayoutData size="55%" />
+                    </layoutData>
+                    <content>
+                        <!-- <PDFViewer
+                            source="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                            width="100%"
+                            isTrustedSource="true"
+                            showDownloadButton="false"
+                        /> -->
+                        <upload:UploadSet
+                            id="uploadSet"
+                            instantUpload="false"
+                            uploadEnabled="true"
+                            beforeItemAdded="onBeforeItemAdded"
+                            maxFileSize="10"
+                            afterItemAdded="setVisibility"
+                            sameFilenameAllowed="false"
+                            multiple="false"
+                            visible="false"
+                        >
+                            <upload:toolbar />
+                        </upload:UploadSet>
+
+                        <!-- <PDFViewer
+                            id="pdfViewer"
+                            source=""
+                            width="100%"
+                            height="100%"
+                            isTrustedSource="true"
+                            showDownloadButton="false"
+                            visible="false"
+                        /> -->
+                        <!-- <VBox id="idContainer" visible="false">
+                           <Button text="Remove"></Button> -->
+                        <VBox class="sapUiTinyMargin">
+                            <!-- Right-aligned Clear Button -->
+                            <HBox justifyContent="End">
+                                <Button
+                                    icon="sap-icon://clear-all"
+                                    id="idClearBtn"
+                                    tooltip="Close Preview"
+                                    press=".onClearPreview"
+                                    visible="false"
+                                />
+                            </HBox>
+
+                            <!-- PDF Preview Iframe -->
+                            <core:HTML
+                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
+                                sanitizeContent="false"
+                            />
+                        </VBox>
+
+                        <!-- </VBox> -->
+                    </content>
+                </Page>
+
+                <f:DynamicPage
+                    showFooter="true"
+                    id="idDynamicPage"
+                >
+                    <f:title>
+                        <f:DynamicPageTitle>
+                            <f:heading>
+                                <Title text="Invoice Details" />
+                            </f:heading>
+                        </f:DynamicPageTitle>
+                    </f:title>
+
+                    <f:content>
+                        <VBox class="sapUiTinyMargin">
+                            <form:SimpleForm
+                                editable="true"
+                                layout="ColumnLayout"
+                                title=""
+                                class="sapUiTinyMargin"
+                            >
+                                <form:content>
+                                    <Label text="Invoice Number" />
+                                    <Input
+                                        id="invoiceNumber"
+                                        value=""
+                                        placeholder="Invoice Number"
+                                    />
+                                    <Label text="Invoice Date" />
+                                    <DatePicker
+                                        id="invoiceDate"
+                                        value="{'path':'/valueDP7','type':'sap.ui.model.type.Date'}"
+                                        showCurrentDateButton="true"
+                                        change="handleChange"
+                                        class="sapUiSmallMarginBottom"
+                                    />
+                                    <Label text="Total Amount" />
+                                    <Input
+                                        id="totalAmount"
+                                        value=""
+                                        placeholder="Total Aomunt"
+                                    />
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </f:content>
+                    <f:footer>
+                        <OverflowToolbar>
+                            <ToolbarSpacer />
+                            <Button
+                                type="Default"
+                                text="Cancel"
+                                press="onCancel"
+                            />
+                            <Button
+                                type="Accept"
+                                text="Submit"
+                                press="onSave"
+                            />
+                        </OverflowToolbar>
+                    </f:footer>
+                </f:DynamicPage>
+            </l:Splitter>
+        </content>
+    </Page>
+</mvc:View>

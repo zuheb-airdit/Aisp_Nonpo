@@ -1,0 +1,261 @@
+<mvc:View
+    controllerName="com.invoiceapp.viminvoiceapprover.controller.InvoiveLists"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        showFooter="false"
+        showHeader="false"
+    >
+        <smartFilterBar:SmartFilterBar
+            id="smartFilterBar"
+            entitySet="CODERHEAD"
+            persistencyKey="SmartFilter_Explored"
+        >
+            <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    key="INVOICE_DATE"
+                    visibleInAdvancedArea="true"
+                    conditionType="{
+								module: 'sap.ui.comp.config.condition.DateRangeType'
+							}"
+                />
+            </smartFilterBar:controlConfiguration>
+        </smartFilterBar:SmartFilterBar>
+
+        <IconTabBar
+            id="idIconTabBarMulti"
+            expanded="{device>/isNoPhone}"
+            class="customTabBar"
+            select="onTabSelect"
+        >
+            <items>
+                <IconTabFilter
+                    key="pending"
+                    icon="./Images/open.png"
+                    text="Pending"
+                >
+                    <smartTable:SmartTable
+                        entitySet="PendingTabForInternalUsers"
+                        smartFilterId="smartFilterBar"
+                        enableExport="true"
+                        beforeExport="onBeforeExport"
+                        useVariantManagement="true"
+                        useTablePersonalisation="true"
+                        header="Pending Requests"
+                        showRowCount="true"
+                        persistencyKey="SmartTableRefApp_Explored"
+                        enableAutoBinding="true"
+                        tableType="ResponsiveTable"
+                        demandPopin="true"
+                        enableAutoColumnWidth="false"
+                        beforeRebindTable="onRebindPending"
+                        id="idSmartTablePend"
+                    >
+                        <Table
+                            selectionChange="selectionChangeHandlerRregister"
+                            growing="true"
+                            growingThreshold="10"
+                        >
+                            <columns>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Req Number"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Status"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem
+                                    vAlign="Middle"
+                                    type="Navigation"
+                                    press="onClickInvoiceList"
+                                >
+                                    <cells>
+                                        <Text text="{REQUEST_NO}" />
+                                        <ObjectStatus
+                                            text="{ path: 'APPROVER_ROLE', formatter: '.statusFormattertest' }"
+                                            state="Indication13"
+                                            inverted="true"
+                                            class="noWrapText"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </smartTable:SmartTable>
+                </IconTabFilter>
+
+                <IconTabFilter
+                    key="rejected"
+                    icon="./Images/Rejected.png"
+                    text="Rejected"
+                >
+                    <smartTable:SmartTable
+                        entitySet="RejectedTabForIU"
+                        smartFilterId="smartFilterBar"
+                        enableExport="true"
+                        beforeExport="onBeforeExport"
+                        useVariantManagement="true"
+                        useTablePersonalisation="true"
+                        header="Pending Requests"
+                        showRowCount="true"
+                        persistencyKey="SmartTableRefApp_Explored"
+                        enableAutoBinding="true"
+                        tableType="ResponsiveTable"
+                        demandPopin="true"
+                        enableAutoColumnWidth="false"
+                        beforeRebindTable="onRebindPending"
+                        id="idSmartTabRej"
+                    >
+                        <Table
+                            selectionChange="selectionChangeHandlerRregister"
+                            growing="true"
+                            growingThreshold="10"
+                        >
+                            <columns>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Req Number"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Status"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem
+                                    vAlign="Middle"
+                                    type="Active"
+                                  
+                                >
+                                    <cells>
+                                        <Text text="{REQUEST_NO}" />
+                                        <ObjectStatus
+                                            text="Rejected"
+                                            state="Indication11"
+                                            inverted="true"
+                                            class="noWrapText"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </smartTable:SmartTable>
+                </IconTabFilter>
+
+                 <IconTabFilter
+                    key="approved"
+                    icon="./Images/submitted.png"
+                    text="Approved"
+                >
+                    <smartTable:SmartTable
+                        entitySet="ApprovedTabForFinalIU"
+                        smartFilterId="smartFilterBar"
+                        enableExport="true"
+                        beforeExport="onBeforeExport"
+                        useVariantManagement="true"
+                        useTablePersonalisation="true"
+                        header="Pending Requests"
+                        showRowCount="true"
+                        persistencyKey="SmartTableRefApp_Explored"
+                        enableAutoBinding="true"
+                        tableType="ResponsiveTable"
+                        demandPopin="true"
+                        enableAutoColumnWidth="false"
+                        beforeRebindTable="onRebindPending"
+                        id="idSmartTabApp"
+                    >
+                        <Table
+                            selectionChange="selectionChangeHandlerRregister"
+                            growing="true"
+                            growingThreshold="10"
+                        >
+                            <columns>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Req Number"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Status"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem
+                                    vAlign="Middle"
+                                    type="Active"
+                                   
+                                >
+                                    <cells>
+                                        <Text text="{REQUEST_NO}" />
+                                        <ObjectStatus
+                                            text="Approved"
+                                            state="Indication14"
+                                            inverted="true"
+                                            class="noWrapText"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </smartTable:SmartTable>
+                </IconTabFilter>
+            </items>
+        </IconTabBar>
+    </Page>
+</mvc:View>

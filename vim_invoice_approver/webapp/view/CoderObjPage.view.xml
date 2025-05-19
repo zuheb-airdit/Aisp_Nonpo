@@ -1,0 +1,432 @@
+<mvc:View
+    controllerName="com.invoiceapp.viminvoiceapprover.controller.CoderObjPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:f="sap.f"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:u="sap.uxap"
+>
+    <Page
+        title="Edit Details"
+        enableScrolling="false"
+        showHeader="false"
+    >
+        <content>
+            <l:Splitter
+                width="100%"
+                class="noSplitterGrip"
+            >
+                <Page
+                    enableScrolling="false"
+                    showHeader="false"
+                    id="previewInvoice"
+                >
+                    <layoutData>
+                        <l:SplitterLayoutData
+                            size="0%"
+                            id="previewSplitterLayout"
+                        />
+                    </layoutData>
+
+                    <content>
+                        <VBox class="sapUiTinyMargin">
+                            <HBox justifyContent="End">
+                                <Button
+                                    icon="sap-icon://decline"
+                                    type="Transparent"
+                                    tooltip="Close Preview"
+                                    press=".onClosePreview"
+                                />
+                            </HBox>
+
+                            <core:HTML
+                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
+                            />
+                        </VBox>
+                    </content>
+                </Page>
+
+                <u:ObjectPageLayout
+                    id="ObjectPageLayout"
+                    showTitleInHeaderContent="true"
+                    alwaysShowContentHeader="false"
+                    preserveHeaderStateOnScroll="false"
+                    headerContentPinnable="true"
+                    headerContentPinned="false"
+                    toggleHeaderOnTitleClick="true"
+                    showFooter="true"
+                    isChildPage="true"
+                    upperCaseAnchorBar="false"
+                >
+                    <u:headerTitle>
+                        <u:ObjectPageDynamicHeaderTitle>
+                            <u:breadcrumbs>
+                                <Breadcrumbs
+                                    currentLocationText="Non PO Invoice Approval"
+                                >
+                                    <Link
+                                        text="Requests"
+                                        press="handleClose"
+                                    />
+                                </Breadcrumbs>
+                            </u:breadcrumbs>
+                            <u:expandedHeading>
+                                <Title
+                                    text="INV NO : {headData>/INVOICE_NUMBER}"
+                                    level="H2"
+                                />
+                            </u:expandedHeading>
+                            <u:actions>
+                                <!-- <Button
+                                    id="idEditBtn"
+                                    text="Edit"
+                                    visible="{= !${headData>/editable} }"
+                                    type="Emphasized"
+                                    press="onEditNonPO"
+                                /> -->
+                            </u:actions>
+                        </u:ObjectPageDynamicHeaderTitle>
+                    </u:headerTitle>
+
+                    <u:headerContent>
+                        <FlexBox
+                            wrap="Wrap"
+                            fitContainer="true"
+                            alignItems="Stretch"
+                        >
+                            <Avatar
+                                src="./Images/object.png"
+                                displaySize="L"
+                                displayShape="Square"
+                                class="sapUiMediumMarginEnd"
+                            />
+
+                            <VBox
+                                class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                            >
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="Supplier:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <Text text="{headData>/SUPPLIER_NAME}" />
+                                </HBox>
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="Company Code:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <Text text="{headData>/COMPANY_CODE}" />
+                                </HBox>
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="Doc Date:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <Text
+                                        text="{path: 'headData>/INVOICE_DATE', formatter: '.formatDate'}"
+                                    />
+                                </HBox>
+                            </VBox>
+
+                            <VBox
+                                class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                            >
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="T Amount:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <ObjectNumber
+                                        number="{headData>/TOTAL_AMOUNT}"
+                                        unit="INR"
+                                    />
+                                </HBox>
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="Status:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <ObjectStatus
+                                        text="{headData>/STATUS_DESC}"
+                                        state="{path: 'headData>/STATUS_DESC', formatter: '.statusState'}"
+                                    />
+                                </HBox>
+                            </VBox>
+
+                            <VBox
+                                class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                            >
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <Label
+                                        text="Expense Type:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <!-- <Input
+                                        value="{headData>/EXPENSE_TYPE}"
+                                        visible="{headData>/editable}"
+                                    /> -->
+
+                                    <Text text="{headData>/EXPENSE_TYPE}" />
+                                </HBox>
+                            </VBox>
+                        </FlexBox>
+                    </u:headerContent>
+
+                    <u:sections>
+                        <u:ObjectPageSection
+                            title="Item Details"
+                            titleUppercase="false"
+                        >
+                            <u:subSections>
+                                <u:ObjectPageSubSection>
+                                    <u:blocks>
+                                        <VBox>
+                                            <Toolbar>
+                                                <ToolbarSpacer />
+                                                <!-- <Button
+                                                    text="+ Add"
+                                                    press=".onAddItem"
+                                                />
+                                                <Button
+                                                    text="Delete"
+                                                    press=".onDeleteItem"
+                                                /> -->
+                                                <Button
+                                                    icon="sap-icon://excel-attachment"
+                                                    text="Export"
+                                                    press=".onExportExcel"
+                                                />
+                                            </Toolbar>
+
+                                            <Table
+                                                id="myTable"
+                                                mode="SingleSelectLeft"
+                                                items="{path: 'tableModel>/results'}"
+                                            >
+                                                <columns>
+                                                    <Column>
+                                                        <Label text="Sr No" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label
+                                                            text="Material"
+                                                        />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label
+                                                            text="Cost Object Type"
+                                                        />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label
+                                                            text="Cost Object"
+                                                        />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label
+                                                            text="GL/Account"
+                                                        />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label text="QTY" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Label text="Price" />
+                                                    </Column>
+                                                </columns>
+
+                                                <items>
+                                                    <ColumnListItem>
+                                                        <cells>
+                                                            <!-- Sr No: Only Text -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>SrNo}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- Material -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>Material}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- Cost Object Type -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>CostObjectType}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- Cost Object -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>CostObject}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- GL Account -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>GLAccount}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- Quantity -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>Qty}"
+                                                                />
+                                                            </VBox>
+
+                                                            <!-- Price -->
+                                                            <VBox>
+                                                                <Text
+                                                                    text="{tableModel>Total}"
+                                                                />
+                                                            </VBox>
+                                                        </cells>
+                                                    </ColumnListItem>
+                                                </items>
+                                            </Table>
+
+                                            <HBox
+                                                justifyContent="End"
+                                                class="sapUiSmallMarginTop"
+                                            >
+                                                <Text
+                                                    id="totalAmountText"
+                                                    text="Total Amount: {headData>/TOTAL_AMOUNT}"
+                                                />
+                                            </HBox>
+                                        </VBox>
+                                    </u:blocks>
+                                </u:ObjectPageSubSection>
+                            </u:subSections>
+                        </u:ObjectPageSection>
+                        <u:ObjectPageSection
+                            title="Attachments ({= ${headData>/TO_VIM_NON_PO_ATTCHEMENTS/results}.length })"
+                        >
+                            <u:subSections>
+                                <u:ObjectPageSubSection>
+                                    <u:blocks>
+                                        <Panel class="sapUiNoContentPadding">
+                                            <VBox
+                                                class="sapUiSmallMargin sapUiSmallMarginTop sapUiSmallMarginBottom"
+                                            >
+                                                <!-- Header -->
+                                                <HBox
+                                                    justifyContent="SpaceBetween"
+                                                    alignItems="Center"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <Title
+                                                        text="Attachments ({= ${headData>/TO_VIM_NON_PO_ATTCHEMENTS/results}.length })"
+                                                        level="H3"
+                                                        id="attachmentsCountTitle"
+                                                    />
+                                                    <!-- <Button
+                                                        text="Extract Details Using OCR"
+                                                        press="onExtractOCR"
+                                                    /> -->
+                                                </HBox>
+
+                                                <!-- List -->
+                                                <List
+                                                    id="attachmentsList"
+                                                    items="{headData>/TO_VIM_NON_PO_ATTCHEMENTS/results}"
+                                                    inset="false"
+                                                    noDataText="No attachments uploaded."
+                                                    class="sapUiNoMargin"
+                                                >
+                                                    <CustomListItem>
+                                                        <HBox
+                                                            justifyContent="SpaceBetween"
+                                                            alignItems="Center"
+                                                            class="sapUiSmallMargin"
+                                                        >
+                                                            <!-- Left -->
+                                                            <HBox
+                                                                alignItems="Center"
+                                                            >
+                                                                <core:Icon
+                                                                    src="sap-icon://document-text"
+                                                                    size="2rem"
+                                                                    class="sapUiSmallMarginEnd"
+                                                                />
+                                                                <VBox>
+                                                                    <Title
+                                                                        text="{headData>IMAGE_FILE_NAME}"
+                                                                    />
+                                                                    <Text
+                                                                        text="Uploaded By: Susan Baker · Uploaded On: 2014-09-03 · File Size: 500 Bytes · Version: 1"
+                                                                    />
+                                                                    <Text
+                                                                        text="Status: Success"
+                                                                        class="sapUiSuccessText"
+                                                                    />
+                                                                </VBox>
+                                                            </HBox>
+
+                                                            <!-- Right -->
+                                                            <HBox
+                                                                alignItems="Center"
+                                                            >
+                                                                <Button
+                                                                    icon="sap-icon://show"
+                                                                    type="Transparent"
+                                                                    tooltip="Preview Attachment"
+                                                                    press="onPreviewPdf"
+                                                                >
+                                                                    <customData>
+                                                                        <core:CustomData
+                                                                            key="imageUrl"
+                                                                            value="{headData>IMAGEURL}"
+                                                                            writeToDom="false"
+                                                                        />
+                                                                    </customData>
+                                                                </Button>
+                                                            </HBox>
+                                                        </HBox>
+                                                    </CustomListItem>
+                                                </List>
+                                            </VBox>
+                                        </Panel>
+                                    </u:blocks>
+                                </u:ObjectPageSubSection>
+                            </u:subSections>
+                        </u:ObjectPageSection>
+                    </u:sections>
+                    <u:footer>
+                        <Toolbar id="otbFooter">
+                            <ToolbarSpacer />
+                            <Button
+                                type="Back"
+                                text="Cancel"
+                                press="handleClose"
+                            />
+                            <Button
+                                type="Success"
+                                icon="sap-icon://complete"
+                                text="Approve"
+                                press="onApproveInvoice"
+                                 visible="{= ${headData>/STATUS} !== 5 }"
+                            />
+                             <Button
+                                type="Reject"
+                                text="Reject"
+                                press="onRejectInvoice"
+                                 visible="{= ${headData>/STATUS} !== 5 }"
+                            />
+                        </Toolbar>
+                    </u:footer>
+                </u:ObjectPageLayout>
+            </l:Splitter>
+        </content>
+    </Page>
+</mvc:View>

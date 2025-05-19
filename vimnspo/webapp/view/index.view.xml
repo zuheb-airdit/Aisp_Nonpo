@@ -1,0 +1,176 @@
+<mvc:View
+    controllerName="com.vim.vimnspo.controller.index"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:f="sap.f"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+>
+    <Page
+        showFooter="false"
+        showHeader="false"
+    >
+        <smartFilterBar:SmartFilterBar
+            id="smartFilterBar"
+            entitySet="NPoVimHeadList"
+            persistencyKey="SmartFilter_Explored"
+            considerAnalyticalParameters="true"
+            initialized="initialized"
+            showRestoreButton="true"
+        >
+            <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    key="INVOICE_NUMBER"
+                    visibleInAdvancedArea="true"
+                />
+
+                <smartFilterBar:ControlConfiguration
+                    key="INVOICE_DATE"
+                    visibleInAdvancedArea="true"
+                    conditionType="{ module:'sap.ui.comp.config.condition.DateRangeType' }"
+                />
+
+                <smartFilterBar:ControlConfiguration
+                    key="TOTAL_AMOUNT"
+                    visibleInAdvancedArea="true"
+                />
+
+                <smartFilterBar:ControlConfiguration
+                    key="STATUS_DESC"
+                    visibleInAdvancedArea="true"
+                />
+            </smartFilterBar:controlConfiguration>
+        </smartFilterBar:SmartFilterBar>
+
+        <smartTable:SmartTable
+            entitySet="NPoVimHeadList"
+            id="smartTableProjects"
+            smartFilterId="smartFilterBar"
+            enableExport="true"
+            afterVariantSave="saveVariant"
+            placeToolbarInTable='true'
+            class='sapUiResponsiveMargin sapUiSmallMarginBottom'
+            showRowCount="true"
+            beforeExport="onBeforeExport"
+            tableType="ResponsiveTable"
+            enableAutoBinding="true"
+            header="Invoice List"
+            beforeRebindTable="handleBeforeRebind_Table"
+            demandPopin="true"
+            fitContainer="true"
+            smartVariant="pageVariantId"
+            persistencyKey="SmartFilterPKey"
+            useVariantManagement="true"
+            useTablePersonalisation="true"
+            enableCopy="false"
+            requestAtLeastFields="projectType"
+            showFullScreenButton="true"
+            enableAutoColumnWidth="false"
+        >
+            <smartTable:customToolbar>
+                <OverflowToolbar
+                    design="Info"
+                    id='stickyToolbar'
+                >
+                    <ToolbarSpacer />
+                    <SearchField
+                        id="searchField"
+                        width="25%"
+                        liveChange=".onSearch"
+                        placeholder="Search..."
+                    />
+                    <Button
+                        id="idCreateProjects"
+                        press="onPressCreate"
+                        text="Create New Invoice"
+                    />
+                </OverflowToolbar>
+            </smartTable:customToolbar>
+
+            <Table
+                id="idTableProjects"
+                sticky="ColumnHeaders,HeaderToolbar,InfoToolbar"
+                selectionChange="selectionChangeHandler"
+                fixedLayout="false"
+                contextualWidth="Auto"
+                growing="true"
+                growingScrollToLoad="true"
+                backgroundDesign="Solid"
+            >
+                <columns>
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "INVOICE_NUMBER", "autoColumnWidth": \{ "visibleProperty": "INVOICE_NUMBER","min": 10, "max": 14  }, "columnIndex": 0, "leadingProperty": "INVOICE_NUMBER", "sortProperty": "INVOICE_NUMBER", "additionalProperty": "INVOICE_NUMBER"}'
+                            />
+                        </customData>
+                        <Text text="Invoice Number" />
+                    </Column>
+
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "INVOICE_DATE", "autoColumnWidth": \{ "visibleProperty": "INVOICE_DATE","min": 12, "max": 14  }, "columnIndex": 1, "leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "additionalProperty": "INVOICE_DATE"}'
+                            />
+                        </customData>
+                        <Text text="Document Date" />
+                    </Column>
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "TOTAL_AMOUNT", "autoColumnWidth": \{ "visibleProperty": "TOTAL_AMOUNT","min": 12, "max": 14  }, "columnIndex": 2, "leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "additionalProperty": "TOTAL_AMOUNT"}'
+                            />
+                        </customData>
+                        <Text text="Amount" />
+                    </Column>
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "STATUS_DESC", "autoColumnWidth": \{ "visibleProperty": "STATUS_DESC","min": 7, "max": 10  }, "columnIndex": 3, "leadingProperty": "STATUS_DESC", "sortProperty": "STATUS_DESC", "additionalProperty": "STATUS_DESC"}'
+                            />
+                        </customData>
+                        <Text text="Status" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        vAlign="Middle"
+                        type="Navigation"
+                        press="handleRowClick"
+                    >
+                        <ObjectStatus
+                            text="{INVOICE_NUMBER}"
+                            state="Indication05"
+                        />
+                        <Text
+                            text="{ path: 'INVOICE_DATE', formatter: '.formatter.date' }"
+                        />
+
+                        <ObjectNumber
+                            number="{
+                           path:'TOTAL_AMOUNT',
+                           type:'sap.ui.model.type.Float',
+                           formatOptions:{ minFractionDigits:2, maxFractionDigits:2 }
+                         }"
+                            unit="INR"
+                        />
+                        <!-- <Text text="{STATUS_DESC}" /> -->
+                        <ObjectStatus
+                            inverted="true"
+                            class="noWrapText"
+                            text="{VENDOR_STATUS}"
+                            state="{ path: 'VENDOR_STATUS', formatter: '.formatter.statusState' }"
+                            active="true"
+                        />
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </smartTable:SmartTable>
+    </Page>
+</mvc:View>

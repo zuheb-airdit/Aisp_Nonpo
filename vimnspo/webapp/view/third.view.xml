@@ -1,0 +1,351 @@
+<mvc:View
+    controllerName="com.vim.vimnspo.controller.third"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
+    xmlns="sap.uxap"
+    xmlns:l="sap.ui.layout"
+    xmlns:plugins="sap.m.plugins"
+>
+    <l:Splitter width="100%">
+        <ObjectPageLayout
+            id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            headerContentPinned="false"
+            toggleHeaderOnTitleClick="true"
+            showFooter="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false"
+        >
+            <layoutData>
+                <l:SplitterLayoutData
+                    id="splitterSize"
+                    size="100%"
+                />
+            </layoutData>
+            <headerTitle>
+                <ObjectPageDynamicHeaderTitle>
+                    <!-- <breadcrumbs>
+                    <m:Breadcrumbs
+                        id="breadcrumbsId"
+                        currentLocationText="Approve Invoice"
+                    >
+                        <m:Link
+                            text="Order"
+                            press="handleClose"
+                        />
+                    </m:Breadcrumbs>
+                </breadcrumbs> -->
+                    <expandedHeading>
+                        <m:Title
+                            text="INV: {vimHeader>/REQUEST_NO}"
+                            wrapping="true"
+                        />
+                    </expandedHeading>
+                    <snappedHeading>
+                        <m:HBox
+                            wrap="NoWrap"
+                            alignItems="Center"
+                        >
+                            <m:Avatar
+                                src="./Images/objPageIcon.png"
+                                displaySize="S"
+                                displayShape="Square"
+                                class="sapUiTinyMarginEnd"
+                            />
+                            <m:VBox wrap="Wrap">
+                                <m:Title
+                                    text="INVOICE NUMBER"
+                                    wrapping="true"
+                                />
+                                <m:Label
+                                    text="INV: {vimHeader>/REQUEST_NO}"
+                                    wrapping="true"
+                                />
+                            </m:VBox>
+                        </m:HBox>
+                    </snappedHeading>
+                </ObjectPageDynamicHeaderTitle>
+            </headerTitle>
+
+            <headerContent>
+                <m:FlexBox
+                    wrap="Wrap"
+                    direction="Row"
+                    alignItems="Center"
+                    class="sapUiSmallMarginBottom"
+                >
+                    <m:Avatar
+                        src="./Images/objPageIcon.png"
+                        displaySize="L"
+                        displayShape="Square"
+                        class="sapUiMediumMarginEnd"
+                    />
+
+                    <m:VBox
+                        width="12rem"
+                        class="sapUiMediumMarginEnd"
+                    >
+                        <m:Label text="INV Ref No:" />
+                        <m:Text text="{vimHeader>/INVOICE_NUMBER}" />
+                    </m:VBox>
+
+                    <m:VBox
+                        width="12rem"
+                        class="sapUiMediumMarginEnd"
+                    >
+                        <m:Label text="Amount:" />
+                        <m:ObjectNumber
+                            number="{
+                                 path:'vimHeader>/TOTAL_AMOUNT',
+                                 type:'sap.ui.model.type.Float',
+                                 formatOptions:{minFractionDigits:2,maxFractionDigits:2}
+                             }"
+                            unit="INR"
+                        />
+                    </m:VBox>
+
+                    <m:VBox
+                        width="12rem"
+                        class="sapUiMediumMarginEnd"
+                    >
+                        <m:Label text="Doc Date:" />
+                        <m:Text
+                            text="{ path:'vimHeader>/INVOICE_DATE', formatter:'.formatter.date'}"
+                        />
+                    </m:VBox>
+
+                    <m:VBox width="12rem">
+                        <m:Label text="Status:" />
+                        <m:ObjectStatus
+                            inverted="true"
+                            state="{ path:'vimHeader>/VENDOR_STATUS', formatter:'.formatter.statusState'}"
+                            text="{vimHeader>/VENDOR_STATUS}"
+                        />
+                    </m:VBox>
+                </m:FlexBox>
+            </headerContent>
+
+            <sections>
+                <ObjectPageSection
+                    title="Item Details"
+                    titleUppercase="false"
+                >
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <!-- Show Table if Approved -->
+                                <m:VBox
+                                    id="itemTableBox"
+                                    visible="false"
+                                >
+                                    <m:ScrollContainer
+                                        horizontal="true"
+                                        vertical="true"
+                                        width="100%"
+                                    >
+                                        <m:Table
+                                            xmlns:m="sap.m"
+                                            id="myTable"
+                                            items="{vimHeader>/TO_VIM_NON_PO_ITEMS/results}"
+                                            inset="false"
+                                            width="auto"
+                                        >
+                                            <m:headerToolbar>
+                                                <m:Toolbar>
+                                                    <m:Title
+                                                        text="Item Details"
+                                                        level="H2"
+                                                    />
+                                                    <!-- Additional toolbar buttons, if needed -->
+                                                </m:Toolbar>
+                                            </m:headerToolbar>
+
+                                            <!-- Define Columns -->
+                                            <m:columns>
+                                                <m:Column width="7rem">
+                                                    <m:Text text="Sr No" />
+                                                </m:Column>
+                                                <m:Column width="8rem">
+                                                    <m:Text
+                                                        text="Material Description"
+                                                    />
+                                                </m:Column>
+                                                <m:Column width="4rem">
+                                                    <m:Text text="Quantity" />
+                                                </m:Column>
+                                                <m:Column width="12rem">
+                                                    <m:Text text="Price" />
+                                                </m:Column>
+                                            </m:columns>
+
+                                            <!-- Each Row -->
+                                            <m:items>
+                                                <m:ColumnListItem>
+                                                    <m:cells>
+                                                        <m:Text
+                                                            text="{vimHeader>SR_NO}"
+                                                        />
+                                                        <m:Text
+                                                            text="{vimHeader>MATERIAL}"
+                                                        />
+                                                        <m:Text
+                                                            text="{vimHeader>QUANTITY}"
+                                                        />
+                                                        <m:ObjectNumber
+                                                            number="{vimHeader>PRICE}"
+                                                            unit="INR"
+                                                        />
+                                                    </m:cells>
+                                                </m:ColumnListItem>
+                                            </m:items>
+                                        </m:Table>
+
+                                        <m:HBox
+                                            justifyContent="End"
+                                            class="sapUiTinyMarginTop sapUiTinyMarginEnd"
+                                        >
+                                            <m:Label
+                                                text="Total Amount:"
+                                                class="sapUiTinyMarginEnd"
+                                            />
+                                            <m:ObjectNumber
+                                                number="{vimHeader>/TOTAL_AMOUNT}"
+                                                unit="INR"
+                                            />
+                                        </m:HBox>
+                                    </m:ScrollContainer>
+                                </m:VBox>
+
+                                <!-- Show MessageStrip if Not Approved -->
+                                <m:MessageStrip
+                                    id="waitingStrip"
+                                    text="Invoice uploaded, waiting for approval"
+                                    showIcon="true"
+                                    showCloseButton="false"
+                                    class="sapUiMediumMarginBottom"
+                                    visible="false"
+                                />
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+
+                <ObjectPageSection title="Attachments">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <!-- Show Attachments List -->
+                                <m:VBox
+                                    id="attachmentsBox"
+                                    visible="false"
+                                >
+                                    <m:List
+                                        id="attachmentsList"
+                                        items="{vimHeader>/TO_VIM_NON_PO_ATTCHEMENTS/results}"
+                                        inset="false"
+                                        noDataText="No attachments uploaded."
+                                        class="sapUiNoMargin"
+                                    >
+                                        <m:CustomListItem>
+                                            <m:HBox
+                                                justifyContent="SpaceBetween"
+                                                alignItems="Center"
+                                                class="sapUiSmallMargin"
+                                            >
+                                                <m:HBox alignItems="Center">
+                                                    <core:Icon
+                                                        src="sap-icon://document-text"
+                                                        size="2rem"
+                                                        class="sapUiSmallMarginEnd"
+                                                    />
+                                                    <m:VBox>
+                                                        <m:Text
+                                                            text="{vimHeader>IMAGE_FILE_NAME}"
+                                                        />
+                                                        <m:Text
+                                                            text="{vimHeader>DESCRIPTION}"
+                                                        />
+                                                    </m:VBox>
+                                                </m:HBox>
+
+                                                <m:HBox alignItems="Center">
+                                                    <m:Button
+                                                        icon="sap-icon://show"
+                                                        type="Transparent"
+                                                        tooltip="Preview Attachment"
+                                                        press="onPreviewPdf"
+                                                        class="sapUiTinyMarginEnd"
+                                                    >
+                                                        <m:customData>
+                                                            <core:CustomData
+                                                                key="imageUrl"
+                                                                value="{vimHeader>IMAGEURL}"
+                                                                writeToDom="false"
+                                                            />
+                                                        </m:customData>
+                                                    </m:Button>
+                                                </m:HBox>
+                                            </m:HBox>
+                                        </m:CustomListItem>
+                                    </m:List>
+                                </m:VBox>
+
+                                <!-- Show Message if No Attachments -->
+                                <m:MessageStrip
+                                    text="No attachments uploaded for this invoice."
+                                    showIcon="true"
+                                    showCloseButton="false"
+                                    class="sapUiMediumMarginBottom"
+                                    visible="{= ${vimHeader>/TO_VIM_NON_PO_ATTCHEMENTS/results}.length === 0 }"
+                                />
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+            <footer>
+                <m:Toolbar id="otbFooter">
+                    <m:ToolbarSpacer />
+                    <m:Button
+                        icon="sap-icon://arrow-left"
+                        text="Cancel"
+                        press="handleClose"
+                    />
+                    <m:Button
+                        type="Default"
+                        icon="sap-icon://sys-enter"
+                        text="Ok"
+                        visible="true"
+                    />
+                </m:Toolbar>
+            </footer>
+        </ObjectPageLayout>
+
+        <f:DynamicPage
+            showFooter="true"
+            id="rightPaneLayout"
+        >
+            <f:content>
+                <!-- <m:PDFViewer
+                    id="pdf"
+                    source=""
+                    width="100%"
+                    height="100%"
+                    isTrustedSource="true"
+                    showDownloadButton="false"
+                    visible="false"
+                /> -->
+                <core:HTML
+                    content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
+                />
+            </f:content>
+        </f:DynamicPage>
+    </l:Splitter>
+</mvc:View>

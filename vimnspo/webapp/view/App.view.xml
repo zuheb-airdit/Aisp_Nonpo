@@ -1,0 +1,9 @@
+<mvc:View
+    controllerName="com.vim.vimnspo.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+    <App id="app" />
+</mvc:View>
