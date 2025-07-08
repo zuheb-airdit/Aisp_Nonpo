@@ -7,6 +7,7 @@ sap.ui.define([
 
     return Controller.extend("com.nonpo.vimnonpo.controller.CoderObjPage", {
         onInit() {
+            this.aInput2Refs = [];
             let oModel = this.getOwnerComponent().getModel();
             this.getView().setModel(oModel)
 
@@ -46,13 +47,13 @@ sap.ui.define([
                         headData.editable = (headData.STATUS !== 3);
                         if (headData.STATUS === 3) {
                             const itemsRaw = headData.TO_VIM_NON_PO_ITEMS?.results || [];
-                        
+
                             // Map and calculate total only from PRICE
                             let totalAmount = 0;
                             const mappedItems = itemsRaw.map(item => {
                                 const price = parseFloat(item.PRICE) || 0;
                                 totalAmount += price;
-                        
+
                                 return {
                                     SrNo: String(item.SR_NO).padStart(3, "0"),
                                     Material: item.MATERIAL,
@@ -64,14 +65,14 @@ sap.ui.define([
                                     Total: price.toFixed(2)
                                 };
                             });
-                        
+
                             // Update headData TOTAL_AMOUNT
                             // headData.TOTAL_AMOUNT = totalAmount.toFixed(2);
                             this.byId("totalAmountText").setText(`Total Amount: ${totalAmount.toFixed(2)}`)
                             const tableModel = new sap.ui.model.json.JSONModel({ results: mappedItems });
                             oView.setModel(tableModel, "tableModel");
                         }
-                        
+
 
                         const oJsonModel = new sap.ui.model.json.JSONModel(headData);
                         oView.setModel(oJsonModel, "headData");
@@ -116,9 +117,31 @@ sap.ui.define([
                 sap.m.MessageToast.show("Unable to load PDF.");
             }
         },
+        onExportExcel: function () {
+            const aCols = [
+                { label: "Sr No", property: "SrNo" },
+                { label: "Material", property: "Material" },
+                { label: "Cost Object Type", property: "CostObjectType" },
+                { label: "Cost Object", property: "CostObject" },
+                { label: "GL/Account", property: "GLAccount" },
+                { label: "QTY", property: "Qty" },
+                { label: "Price", property: "Price" },
+                { label: "Total", property: "Total" }
+            ];
+
+            const oSettings = {
+                workbook: { columns: aCols },
+                dataSource: this.getView().getModel("tableModel").getProperty("/results"),
+                fileName: "Item_Details.xlsx"
+            };
+
+            const oSpreadsheet = new sap.ui.export.Spreadsheet(oSettings);
+            oSpreadsheet.build().finally(() => oSpreadsheet.destroy());
+        },
 
 
         onAddItem: function () {
+            debugger;
             const oTableModel = this.getView().getModel("tableModel");
             const data = oTableModel.getProperty("/results") || [];
 
@@ -162,79 +185,91 @@ sap.ui.define([
             this.onTotalAmountChanged();
         },
 
-        // onAfterRendering: function () {
-        //     this.onTotalAmountChanged();
-        // },
-
-
-        onExportExcel: function () {
-            const aCols = [
-                { label: "Sr No", property: "SrNo" },
-                { label: "Material", property: "Material" },
-                { label: "Cost Object Type", property: "CostObjectType" },
-                { label: "Cost Object", property: "CostObject" },
-                { label: "GL/Account", property: "GLAccount" },
-                { label: "QTY", property: "Qty" },
-                { label: "Price", property: "Price" },
-                { label: "Total", property: "Total" }
-            ];
-
-            const oSettings = {
-                workbook: { columns: aCols },
-                dataSource: this.getView().getModel("tableModel").getProperty("/results"),
-                fileName: "Item_Details.xlsx"
-            };
-
-            const oSpreadsheet = new sap.ui.export.Spreadsheet(oSettings);
-            oSpreadsheet.build().finally(() => oSpreadsheet.destroy());
-        },
-
-        // onTotalAmountChanged: function () {
-        //     // Clear any previous timeout
-        //     clearTimeout(this._totalCalcTimer);
-
-        //     // Set a new delayed calculation
-        //     this._totalCalcTimer = setTimeout(() => {
-        //         const oModel = this.getView().getModel("tableModel");
-        //         const data = oModel.getProperty("/results") || [];
-
-        //         let total = 0;
-        //         for (let i = 0; i < data.length; i++) {
-        //             const price = parseFloat(data[i].Price);
-        //             if (!isNaN(price)) {
-        //                 total += price;
-        //             }
-        //         }
-
-        //         const oText = this.byId("totalAmountText");
-        //         if (oText) {
-        //             oText.setText("Total Amount: " + total.toLocaleString("en-IN"));
-        //         }
-        //     }, 500); // 🔁 500ms after typing stops
-        // },
-
         onTotalAmountChanged: function () {
             const oView = this.getView();
             const oText = oView.byId("totalAmountText");
             const oModel = oView.getModel("tableModel");
-            const aItems = oModel.getProperty("/results");
-
+            const aItems = oModel.getProperty("/results") || [];
+            // Initialize total first
             let total = 0;
+
+            // Add values from the model items
             aItems.forEach(item => {
                 const price = parseFloat(item.Total);
                 if (!isNaN(price)) {
                     total += price;
                 }
             });
+            
+            (this.aInput2Refs || []).forEach(oInput => {
+                const val = parseFloat(oInput.getValue());
+                if (!isNaN(val)) {
+                    total += val;
+                }
+            });        
 
             // Update total text
             if (oText) {
                 oText.setText("Total Amount: " + total.toFixed(2));
             }
         },
-
+        onClickAdd: function () {
+            var oItemsVBox = this.byId("itemsVBox");
+        
+            var oInput1 = new sap.m.Input({
+                placeholder: "Label",
+                value: "",
+                width: "5rem",
+                valueHelpOnly: false,
+                showValueHelp: false,
+                valueLiveUpdate: true,
+                layoutData: new sap.m.FlexItemData({ styleClass: "sapUiTinyMarginEnd" })
+            });
+        
+            var oInput2 = new sap.m.Input({
+                placeholder: "%",
+                value: "",
+                width: "5rem",
+                layoutData: new sap.m.FlexItemData()
+            });
+        
+            // Add input reference for later total calculation
+            this.aInput2Refs.push(oInput2);
+        
+            var oDeleteBtn = new sap.m.Button({
+                icon: "sap-icon://delete",
+                type: "Transparent",
+                press: () => {
+                    // Remove this HBox from VBox
+                    oItemsVBox.removeItem(oHBox);
+        
+                    // Remove input2 ref from aInput2Refs
+                    const index = this.aInput2Refs.indexOf(oInput2);
+                    if (index !== -1) {
+                        this.aInput2Refs.splice(index, 1);
+                    }
+        
+                    // Recalculate total after deletion
+                    this.onTotalAmountChanged();
+                }
+            });
+        
+            var oHBox = new sap.m.HBox({
+                alignItems: "Center",
+                justifyContent: "End",
+                items: [oInput1, oInput2, oDeleteBtn],
+                class: "sapUiTinyMarginTop"
+            });
+        
+            oItemsVBox.addItem(oHBox);
+            oInput2.attachLiveChange(() => {
+                this.onTotalAmountChanged();
+            });
+        },
+        
 
         _recalculateTotal: function () {
+            debugger;
             const data = this.getView().getModel("tableModel").getProperty("/results") || [];
             const grandTotal = data.reduce((sum, item) => sum + (item.Total || 0), 0);
             this.getView().byId("totalAmountText").setText("Total Amount: " + grandTotal.toLocaleString());
@@ -618,40 +653,40 @@ sap.ui.define([
             const oRouter = this.getOwnerComponent().getRouter();
             const oView = this.getView();
             oView.setBusy(true);
-        
+
             const oHeadData = oView.getModel("headData").getData();
             const aItems = oView.getModel("tableModel")?.getProperty("/results") || [];
             const aAttachments = oHeadData.TO_VIM_NON_PO_ATTCHEMENTS?.results || [];
             const oModel = oView.getModel();
-        
+
             // ✅ 1. Expense Type must be filled
             if (!oHeadData.EXPENSE_TYPE || oHeadData.EXPENSE_TYPE.trim() === "") {
                 oView.setBusy(false);
                 MessageBox.error("Expense Type is required.");
                 return;
             }
-        
+
             // ✅ 2. Must have at least one item in the list
             if (!aItems.length) {
                 oView.setBusy(false);
                 MessageBox.error("At least one item must be added in the table.");
                 return;
             }
-        
+
             // ✅ 3. Total amount in header must match table total
             let tableTotal = 0;
             aItems.forEach(item => {
                 const amount = parseFloat(item.Total || "0");
                 tableTotal += isNaN(amount) ? 0 : amount;
             });
-        
+
             const headerTotal = parseFloat(oHeadData.TOTAL_AMOUNT || "0");
             if (headerTotal !== tableTotal) {
                 oView.setBusy(false);
                 MessageBox.error(`Total Amount mismatch. Table total: ₹${tableTotal}, Header total: ₹${headerTotal}`);
                 return;
             }
-        
+
             // ✅ Construct payload
             const payload = {
                 action: "EDIT_RESUBMIT",
@@ -684,7 +719,7 @@ sap.ui.define([
                     IMAGE_FILE_NAME: att.IMAGE_FILE_NAME || ""
                 }))
             };
-        
+
             // 🔄 Call backend
             oModel.create("/PostNPOVimData", payload, {
                 success: function (res) {
@@ -703,7 +738,7 @@ sap.ui.define([
                 }
             });
         },
-        
+
 
         onExtractOCR: function () {
             const oView = this.getView();
@@ -792,22 +827,6 @@ sap.ui.define([
             } else {
                 oEditBtn.setText("Edit");
             }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        },
     });
 });

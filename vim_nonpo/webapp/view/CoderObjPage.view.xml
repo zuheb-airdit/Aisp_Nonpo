@@ -101,7 +101,7 @@
                                 src="./Images/object.png"
                                 displaySize="L"
                                 displayShape="Square"
-                                class="sapUiMediumMarginEnd"
+                                class="sapUiMediumMarginEnd sapUiTinyMarginTop"
                             />
 
                             <VBox
@@ -110,9 +110,9 @@
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
                                         text="Supplier:"
-                                        class="sapUiTinyMarginEnd"
+                                        class="sapUiTinyMarginEnd sapUiTinyMarginTop"
                                     />
-                                    <Text text="{headData>/SUPPLIER_NAME}" />
+                                    <Text text="{headData>/SUPPLIER_NAME}" class="sapUiTinyMarginTop" />
                                 </HBox>
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
@@ -124,7 +124,7 @@
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
                                         text="Doc Date:"
-                                        class="sapUiTinyMarginEnd"
+                                        class="sapUiTinyMarginEnd sapUiTinyMarginTop"
                                     />
                                     <Text
                                         text="{path: 'headData>/INVOICE_DATE', formatter: '.formatDate'}"
@@ -135,6 +135,7 @@
                                         valueFormat="yyyy-MM-dd"
                                         displayFormat="long"
                                         visible="{headData>/editable}"
+                                        width="8rem"
                                     />
                                 </HBox>
                             </VBox>
@@ -145,7 +146,7 @@
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
                                         text="T Amount:"
-                                        class="sapUiTinyMarginEnd"
+                                        class="sapUiTinyMarginEnd sapUiTinyMarginTop"
                                     />
                                     <VBox>
                                         <ObjectNumber
@@ -157,6 +158,7 @@
                                             value="{headData>/TOTAL_AMOUNT}"
                                             visible="{headData>/editable}"
                                             class="classinp"
+                                            width="7rem"
                                         />
                                     </VBox>
                                 </HBox>
@@ -178,11 +180,12 @@
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
                                         text="Expense Type:"
-                                        class="sapUiTinyMarginEnd"
+                                        class="sapUiTinyMarginEnd sapUiTinyMarginTop "
                                     />
                                     <Input
                                         value="{headData>/EXPENSE_TYPE}"
                                         visible="{headData>/editable}"
+                                        width="7rem"
                                     />
 
                                     <Text
@@ -385,6 +388,22 @@
                                                     </ColumnListItem>
                                                 </items>
                                             </Table>
+                                            <HBox
+                                                justifyContent="End"
+                                                class="sapUiSmallMarginTop"
+                                            >
+                                                <Button
+                                                    text="+ Add"
+                                                    press=".onClickAdd"
+                                                    type = "Transparent"
+                                                />
+                                            </HBox>
+                                            <!-- Container for dynamically added rows -->
+                                            <VBox
+                                                id="itemsVBox"
+                                                class="sapUiSmallMarginTop"
+                                                justifyContent="End"
+                                            />
 
                                             <HBox
                                                 justifyContent="End"

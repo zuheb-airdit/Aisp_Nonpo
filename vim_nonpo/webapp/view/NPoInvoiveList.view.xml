@@ -9,7 +9,8 @@
 >
     <Page
         showFooter="false"
-        showHeader="false"
+        showHeader="true"
+        title="Coder -NonPO"
     >
         <smartFilterBar:SmartFilterBar
             id="smartFilterBar"
