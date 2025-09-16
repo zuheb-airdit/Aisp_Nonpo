@@ -1,150 +1,150 @@
 {
-  "_version": "1.65.0",
-  "sap.app": {
-    "id": "com.nonpo.vimnonpo",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
-    },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:basic",
-      "version": "1.17.4",
-      "toolsId": "726ed509-3172-4739-b580-242a779fadf0"
-    },
-    "dataSources": {
-      "mainService": {
-        "uri": "/odata/v2/non-po-vim/",
-        "type": "OData",
-        "settings": {
-          "annotations": [
-            "annotation0"
-          ],
-          "localUri": "localService/mainService/metadata.xml",
-          "odataVersion": "2.0"
-        }
-      },
-      "annotation0": {
-        "type": "ODataAnnotation",
-        "uri": "annotations/annotation0.xml",
-        "settings": {
-          "localUri": "annotations/annotation0.xml"
-        }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "vim_nonpo-Approve": {
-          "semanticObject": "vim_nonpo",
-          "action": "Approve",
-          "title": "{{vim_nonpo-Approve.flpTitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
-        }
-      }
-    }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
-    },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "flexEnabled": false,
-    "dependencies": {
-      "minUI5Version": "1.135.0",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.nonpo.vimnonpo.i18n.i18n"
-        }
-      },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {}
-      }
-    },
-    "resources": {
-      "css": [
-        {
-          "uri": "css/style.css"
-        }
-      ]
-    },
-    "routing": {
-      "config": {
-        "routerClass": "sap.m.routing.Router",
-        "controlAggregation": "pages",
-        "controlId": "app",
-        "transition": "slide",
-        "type": "View",
-        "viewType": "XML",
-        "path": "com.nonpo.vimnonpo.view",
-        "async": true
-      },
-      "routes": [
-        {
-          "name": "RouteNPoInvoiveList",
-          "pattern": ":?query:",
-          "target": [
-            "TargetNPoInvoiveList"
-          ]
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "com.nonpo.vimnonpo",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
         },
-        {
-          "name": "RouteCoderDetails",
-          "pattern": "RouteCoderDetails/{reqNo}",
-          "target": [
-            "TargetDetailsPage"
-          ]
-        }
-      ],
-      "targets": {
-        "TargetNPoInvoiveList": {
-          "id": "NPoInvoiveList",
-          "name": "NPoInvoiveList"
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.17.4",
+            "toolsId": "726ed509-3172-4739-b580-242a779fadf0"
         },
-        "TargetDetailsPage": {
-          "id": "CoderObjPage",
-          "name": "CoderObjPage"
+        "dataSources": {
+            "mainService": {
+                "uri": "odata/v2/non-po-vim-ocr-coder-side/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation0"
+                    ],
+                    "localUri": "localService/mainService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            },
+            "annotation0": {
+                "type": "ODataAnnotation",
+                "uri": "annotations/annotation0.xml",
+                "settings": {
+                    "localUri": "annotations/annotation0.xml"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "vim_nonpo-Approve": {
+                    "semanticObject": "vim_nonpo",
+                    "action": "Approve",
+                    "title": "{{vim_nonpo-Approve.flpTitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            }
         }
-      }
     },
-    "rootView": {
-      "viewName": "com.nonpo.vimnonpo.view.App",
-      "type": "XML",
-      "id": "App",
-      "async": true
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "dependencies": {
+            "minUI5Version": "1.135.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.nonpo.vimnonpo.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {}
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "transition": "slide",
+                "type": "View",
+                "viewType": "XML",
+                "path": "com.nonpo.vimnonpo.view",
+                "async": true
+            },
+            "routes": [
+                {
+                    "name": "RouteNPoInvoiveList",
+                    "pattern": ":?query:",
+                    "target": [
+                        "TargetNPoInvoiveList"
+                    ]
+                },
+                {
+                    "name": "RouteCoderDetails",
+                    "pattern": "RouteCoderDetails/{reqNo}",
+                    "target": [
+                        "TargetDetailsPage"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetNPoInvoiveList": {
+                    "id": "NPoInvoiveList",
+                    "name": "NPoInvoiveList"
+                },
+                "TargetDetailsPage": {
+                    "id": "CoderObjPage",
+                    "name": "CoderObjPage"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "com.nonpo.vimnonpo.view.App",
+            "type": "XML",
+            "id": "App",
+            "async": true
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "vimnpo"
     }
-  },
-  "sap.cloud": {
-    "public": true,
-    "service": "vimnpo"
-  }
 }

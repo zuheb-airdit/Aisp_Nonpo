@@ -1,16 +1,18 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/base/security/URLListValidator"
 
-], (Controller, MessageBox) => {
+
+], (Controller, MessageBox , URLListValidator) => {
     "use strict";
 
     return Controller.extend("com.nonpo.vimnonpo.controller.CoderObjPage", {
         onInit() {
             this.aInput2Refs = [];
+            URLListValidator.add("https", "agpcgpdevqa.blob.core.windows.net");
             let oModel = this.getOwnerComponent().getModel();
             this.getView().setModel(oModel)
-
             this.getOwnerComponent()
                 .getRouter()
                 .getRoute("RouteCoderDetails")
@@ -98,17 +100,12 @@ sap.ui.define([
         },
 
         onPreviewPdf: function (oEvent) {
-            // Get PDF URL from CustomData
             const pdfUrl = oEvent.getSource().getCustomData().find(d => d.getKey() === "imageUrl")?.getValue();
-
             if (pdfUrl) {
-                // 1. Show the right pane by setting size
                 const oSplitterLayout = this.byId("previewSplitterLayout");
                 if (oSplitterLayout) {
                     oSplitterLayout.setSize("35%");
                 }
-
-                // 2. Inject PDF into iframe
                 const iframe = document.getElementById("pdfFrame");
                 if (iframe) {
                     iframe.src = pdfUrl;

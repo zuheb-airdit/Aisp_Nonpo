@@ -19,36 +19,6 @@
                 width="100%"
                 class="noSplitterGrip"
             >
-                <Page
-                    enableScrolling="false"
-                    showHeader="false"
-                    id="previewInvoice"
-                >
-                    <layoutData>
-                        <l:SplitterLayoutData
-                            size="0%"
-                            id="previewSplitterLayout"
-                        />
-                    </layoutData>
-
-                    <content>
-                        <VBox class="sapUiTinyMargin">
-                            <HBox justifyContent="End">
-                                <Button
-                                    icon="sap-icon://decline"
-                                    type="Transparent"
-                                    tooltip="Close Preview"
-                                    press=".onClosePreview"
-                                />
-                            </HBox>
-
-                            <core:HTML
-                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
-                            />
-                        </VBox>
-                    </content>
-                </Page>
-
                 <u:ObjectPageLayout
                     id="ObjectPageLayout"
                     showTitleInHeaderContent="true"
@@ -61,6 +31,12 @@
                     isChildPage="true"
                     upperCaseAnchorBar="false"
                 >
+                    <!-- <u:layoutData>
+                        <l:SplitterLayoutData
+                            size="100%"
+                            id="previewSplitterLayout"
+                        />
+                    </u:layoutData> -->
                     <u:headerTitle>
                         <u:ObjectPageDynamicHeaderTitle>
                             <u:breadcrumbs>
@@ -415,17 +391,46 @@
                                 icon="sap-icon://complete"
                                 text="Approve"
                                 press="onApproveInvoice"
-                                 visible="{= ${headData>/STATUS} !== 5 }"
+                                visible="{= ${headData>/STATUS} !== 5 }"
                             />
-                             <Button
+                            <Button
                                 type="Reject"
                                 text="Reject"
                                 press="onRejectInvoice"
-                                 visible="{= ${headData>/STATUS} !== 5 }"
+                                visible="{= ${headData>/STATUS} !== 5 }"
                             />
                         </Toolbar>
                     </u:footer>
                 </u:ObjectPageLayout>
+                <Page
+                    enableScrolling="false"
+                    showHeader="false"
+                    id="previewInvoice"
+                >
+                    <layoutData>
+                        <l:SplitterLayoutData
+                            size="0%"
+                            id="previewSplitterLayout"
+                        />
+                    </layoutData>
+
+                    <content>
+                        <VBox class="sapUiTinyMargin">
+                            <HBox justifyContent="End">
+                                <Button
+                                    icon="sap-icon://decline"
+                                    type="Transparent"
+                                    tooltip="Close Preview"
+                                    press=".onClosePreview"
+                                />
+                            </HBox>
+
+                            <core:HTML
+                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
+                            />
+                        </VBox>
+                    </content>
+                </Page>
             </l:Splitter>
         </content>
     </Page>

@@ -25,22 +25,28 @@
                 <smartFilterBar:ControlConfiguration
                     key="INVOICE_NUMBER"
                     visibleInAdvancedArea="true"
+                    label="Invoice Number"
                 />
 
                 <smartFilterBar:ControlConfiguration
                     key="INVOICE_DATE"
                     visibleInAdvancedArea="true"
                     conditionType="{ module:'sap.ui.comp.config.condition.DateRangeType' }"
+                    label="Invoice Date"
                 />
 
                 <smartFilterBar:ControlConfiguration
                     key="TOTAL_AMOUNT"
                     visibleInAdvancedArea="true"
+                    label="Total Amount"
+
                 />
 
                 <smartFilterBar:ControlConfiguration
                     key="STATUS_DESC"
                     visibleInAdvancedArea="true"
+                    label="Status"
+
                 />
             </smartFilterBar:controlConfiguration>
         </smartFilterBar:SmartFilterBar>
@@ -58,6 +64,7 @@
             tableType="ResponsiveTable"
             enableAutoBinding="true"
             header="Invoice List"
+            backgroundDesign="Transparent"
             beforeRebindTable="handleBeforeRebind_Table"
             demandPopin="true"
             fitContainer="true"

@@ -7,225 +7,51 @@
         <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
     </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="NON_PO_VIM" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <Schema Namespace="NON_PO_VIM_OCR_CODER_SIDE" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
-                <EntitySet Name="NPoVimHead" EntityType="NON_PO_VIM.NPoVimHead"/>
-                <EntitySet Name="CODERHEAD" EntityType="NON_PO_VIM.CODERHEAD"/>
-                <EntitySet Name="NPoVimHeadList" EntityType="NON_PO_VIM.NPoVimHeadList"/>
-                <EntitySet Name="RejectedTabForIU" EntityType="NON_PO_VIM.RejectedTabForIU"/>
-                <EntitySet Name="ApprovedTabForFinalIU" EntityType="NON_PO_VIM.ApprovedTabForFinalIU"/>
-                <EntitySet Name="NPoVimItem" EntityType="NON_PO_VIM.NPoVimItem"/>
-                <EntitySet Name="VIM_NPO_APPROVAL_LOGS" EntityType="NON_PO_VIM.VIM_NPO_APPROVAL_LOGS"/>
-                <EntitySet Name="NPoVimAttachments" EntityType="NON_PO_VIM.NPoVimAttachments"/>
-                <EntitySet Name="CostObjectTypes" EntityType="NON_PO_VIM.CostObjectTypes"/>
-                <EntitySet Name="CostObjects" EntityType="NON_PO_VIM.CostObjects"/>
-                <EntitySet Name="GL_ACCOUNT" EntityType="NON_PO_VIM.GL_ACCOUNT"/>
+                <EntitySet Name="NPoVimAttachments" EntityType="NON_PO_VIM_OCR_CODER_SIDE.NPoVimAttachments"/>
+                <EntitySet Name="CostObjectTypes" EntityType="NON_PO_VIM_OCR_CODER_SIDE.CostObjectTypes"/>
+                <EntitySet Name="CostObjects" EntityType="NON_PO_VIM_OCR_CODER_SIDE.CostObjects"/>
+                <EntitySet Name="GL_ACCOUNT" EntityType="NON_PO_VIM_OCR_CODER_SIDE.GL_ACCOUNT"/>
+                <EntitySet Name="NPoVimHead" EntityType="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead"/>
+                <EntitySet Name="CODERHEAD" EntityType="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD"/>
+                <EntitySet Name="RejectedTabForIU" EntityType="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU"/>
+                <EntitySet Name="NPoVimItem" EntityType="NON_PO_VIM_OCR_CODER_SIDE.NPoVimItem"/>
                 <FunctionImport Name="PostNPOVimData" ReturnType="Edm.String" m:HttpMethod="POST">
                     <Parameter Name="action" Type="Edm.String" Mode="In" Nullable="true"/>
                     <Parameter Name="REQUEST_NO" Type="Edm.Int32" Mode="In" Nullable="true"/>
-                    <Parameter Name="NPoVimhead" Type="Collection(NON_PO_VIM.NPoVimHead)" Nullable="false" Mode="In"/>
-                    <Parameter Name="NPoVimitem" Type="Collection(NON_PO_VIM.NPoVimItem)" Nullable="false" Mode="In"/>
-                    <Parameter Name="Attachment" Type="Collection(NON_PO_VIM.NPoVimAttachments)" Nullable="false" Mode="In"/>
+                    <Parameter Name="NPoVimhead" Type="Collection(NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead)" Nullable="false" Mode="In"/>
+                    <Parameter Name="NPoVimitem" Type="Collection(NON_PO_VIM_OCR_CODER_SIDE.NPoVimItem)" Nullable="false" Mode="In"/>
+                    <Parameter Name="Attachment" Type="Collection(NON_PO_VIM_OCR_CODER_SIDE.NPoVimAttachments)" Nullable="false" Mode="In"/>
                 </FunctionImport>
-                <FunctionImport Name="triggerOCR" ReturnType="NON_PO_VIM.return_NON_PO_VIM_triggerOCR" m:HttpMethod="POST">
+                <FunctionImport Name="triggerOCR" ReturnType="NON_PO_VIM_OCR_CODER_SIDE.return_NON_PO_VIM_OCR_CODER_SIDE_triggerOCR" m:HttpMethod="POST">
                     <Parameter Name="fileUrl" Type="Edm.String" Mode="In" Nullable="true"/>
                 </FunctionImport>
-                <AssociationSet Name="NPoVimHead_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM.NPoVimHead_TO_VIM_NON_PO_ITEMS">
+                <AssociationSet Name="NPoVimHead_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead_TO_VIM_NON_PO_ITEMS">
                     <End Role="NPoVimHead" EntitySet="NPoVimHead"/>
                     <End Role="NPoVimItem" EntitySet="NPoVimItem"/>
                 </AssociationSet>
-                <AssociationSet Name="NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM.NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS">
+                <AssociationSet Name="NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS">
                     <End Role="NPoVimHead" EntitySet="NPoVimHead"/>
                     <End Role="NPoVimAttachments" EntitySet="NPoVimAttachments"/>
                 </AssociationSet>
-                <AssociationSet Name="CODERHEAD_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM.CODERHEAD_TO_VIM_NON_PO_ITEMS">
+                <AssociationSet Name="CODERHEAD_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD_TO_VIM_NON_PO_ITEMS">
                     <End Role="CODERHEAD" EntitySet="CODERHEAD"/>
                     <End Role="NPoVimItem" EntitySet="NPoVimItem"/>
                 </AssociationSet>
-                <AssociationSet Name="CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM.CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS">
+                <AssociationSet Name="CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS">
                     <End Role="CODERHEAD" EntitySet="CODERHEAD"/>
                     <End Role="NPoVimAttachments" EntitySet="NPoVimAttachments"/>
                 </AssociationSet>
-                <AssociationSet Name="NPoVimHeadList_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM.NPoVimHeadList_TO_VIM_NON_PO_ITEMS">
-                    <End Role="NPoVimHeadList" EntitySet="NPoVimHeadList"/>
-                    <End Role="NPoVimItem" EntitySet="NPoVimItem"/>
-                </AssociationSet>
-                <AssociationSet Name="NPoVimHeadList_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM.NPoVimHeadList_TO_VIM_NON_PO_ATTCHEMENTS">
-                    <End Role="NPoVimHeadList" EntitySet="NPoVimHeadList"/>
-                    <End Role="NPoVimAttachments" EntitySet="NPoVimAttachments"/>
-                </AssociationSet>
-                <AssociationSet Name="RejectedTabForIU_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM.RejectedTabForIU_TO_VIM_NON_PO_ITEMS">
+                <AssociationSet Name="RejectedTabForIU_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU_TO_VIM_NON_PO_ITEMS">
                     <End Role="RejectedTabForIU" EntitySet="RejectedTabForIU"/>
                     <End Role="NPoVimItem" EntitySet="NPoVimItem"/>
                 </AssociationSet>
-                <AssociationSet Name="RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM.RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS">
+                <AssociationSet Name="RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS">
                     <End Role="RejectedTabForIU" EntitySet="RejectedTabForIU"/>
-                    <End Role="NPoVimAttachments" EntitySet="NPoVimAttachments"/>
-                </AssociationSet>
-                <AssociationSet Name="ApprovedTabForFinalIU_TO_VIM_NON_PO_ITEMS" Association="NON_PO_VIM.ApprovedTabForFinalIU_TO_VIM_NON_PO_ITEMS">
-                    <End Role="ApprovedTabForFinalIU" EntitySet="ApprovedTabForFinalIU"/>
-                    <End Role="NPoVimItem" EntitySet="NPoVimItem"/>
-                </AssociationSet>
-                <AssociationSet Name="ApprovedTabForFinalIU_TO_VIM_NON_PO_ATTCHEMENTS" Association="NON_PO_VIM.ApprovedTabForFinalIU_TO_VIM_NON_PO_ATTCHEMENTS">
-                    <End Role="ApprovedTabForFinalIU" EntitySet="ApprovedTabForFinalIU"/>
                     <End Role="NPoVimAttachments" EntitySet="NPoVimAttachments"/>
                 </AssociationSet>
             </EntityContainer>
-            <EntityType Name="NPoVimHead">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
-                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
-                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
-                <Property Name="CURRENCY" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
-                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
-                <Property Name="COMPANY_CODE" Type="Edm.String"/>
-                <Property Name="STATUS" Type="Edm.String"/>
-                <Property Name="STATUS_DESC" Type="Edm.String"/>
-                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
-                <Property Name="POSTING_DATE" Type="Edm.String"/>
-                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
-                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM.NPoVimHead_TO_VIM_NON_PO_ITEMS" FromRole="NPoVimHead" ToRole="NPoVimItem"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM.NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="NPoVimHead" ToRole="NPoVimAttachments"/>
-            </EntityType>
-            <EntityType Name="CODERHEAD">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
-                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
-                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
-                <Property Name="CURRENCY" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
-                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
-                <Property Name="COMPANY_CODE" Type="Edm.String"/>
-                <Property Name="STATUS" Type="Edm.String"/>
-                <Property Name="STATUS_DESC" Type="Edm.String"/>
-                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
-                <Property Name="POSTING_DATE" Type="Edm.String"/>
-                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
-                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM.CODERHEAD_TO_VIM_NON_PO_ITEMS" FromRole="CODERHEAD" ToRole="NPoVimItem"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM.CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="CODERHEAD" ToRole="NPoVimAttachments"/>
-            </EntityType>
-            <EntityType Name="NPoVimHeadList">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
-                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
-                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
-                <Property Name="CURRENCY" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
-                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
-                <Property Name="COMPANY_CODE" Type="Edm.String"/>
-                <Property Name="STATUS" Type="Edm.String"/>
-                <Property Name="STATUS_DESC" Type="Edm.String"/>
-                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
-                <Property Name="POSTING_DATE" Type="Edm.String"/>
-                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
-                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM.NPoVimHeadList_TO_VIM_NON_PO_ITEMS" FromRole="NPoVimHeadList" ToRole="NPoVimItem"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM.NPoVimHeadList_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="NPoVimHeadList" ToRole="NPoVimAttachments"/>
-            </EntityType>
-            <EntityType Name="RejectedTabForIU">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
-                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
-                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
-                <Property Name="CURRENCY" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
-                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
-                <Property Name="COMPANY_CODE" Type="Edm.String"/>
-                <Property Name="STATUS" Type="Edm.String"/>
-                <Property Name="STATUS_DESC" Type="Edm.String"/>
-                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
-                <Property Name="POSTING_DATE" Type="Edm.String"/>
-                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
-                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM.RejectedTabForIU_TO_VIM_NON_PO_ITEMS" FromRole="RejectedTabForIU" ToRole="NPoVimItem"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM.RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="RejectedTabForIU" ToRole="NPoVimAttachments"/>
-            </EntityType>
-            <EntityType Name="ApprovedTabForFinalIU">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
-                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
-                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
-                <Property Name="CURRENCY" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
-                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
-                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
-                <Property Name="COMPANY_CODE" Type="Edm.String"/>
-                <Property Name="STATUS" Type="Edm.String"/>
-                <Property Name="STATUS_DESC" Type="Edm.String"/>
-                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
-                <Property Name="POSTING_DATE" Type="Edm.String"/>
-                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
-                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
-                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM.ApprovedTabForFinalIU_TO_VIM_NON_PO_ITEMS" FromRole="ApprovedTabForFinalIU" ToRole="NPoVimItem"/>
-                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM.ApprovedTabForFinalIU_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="ApprovedTabForFinalIU" ToRole="NPoVimAttachments"/>
-            </EntityType>
-            <EntityType Name="NPoVimItem">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="SR_NO" Type="Edm.Int32"/>
-                <Property Name="MATERIAL" Type="Edm.String"/>
-                <Property Name="COST_OBJECT_TYPE" Type="Edm.String"/>
-                <Property Name="COST_OBJECT" Type="Edm.String"/>
-                <Property Name="GL_ACCOUNT" Type="Edm.String"/>
-                <Property Name="QUANTITY" Type="Edm.String"/>
-                <Property Name="PRICE" Type="Edm.String"/>
-            </EntityType>
-            <EntityType Name="VIM_NPO_APPROVAL_LOGS">
-                <Key>
-                    <PropertyRef Name="REQUEST_NO"/>
-                </Key>
-                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="APPROVAL_LEVEL" Type="Edm.Int32"/>
-                <Property Name="APPROVER_ID" Type="Edm.String"/>
-                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
-                <Property Name="ACTION" Type="Edm.String"/>
-                <Property Name="COMMENT" Type="Edm.String"/>
-                <Property Name="TIMESTAMP" Type="Edm.DateTimeOffset" Precision="7"/>
-            </EntityType>
             <EntityType Name="NPoVimAttachments">
                 <Key>
                     <PropertyRef Name="VendorCode"/>
@@ -264,56 +90,133 @@
                 <Property Name="SAKNR" Type="Edm.String" Nullable="false"/>
                 <Property Name="TXT20" Type="Edm.String"/>
             </EntityType>
+            <EntityType Name="NPoVimHead">
+                <Key>
+                    <PropertyRef Name="REQUEST_NO"/>
+                </Key>
+                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
+                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
+                <Property Name="CURRENCY" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
+                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
+                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
+                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
+                <Property Name="COMPANY_CODE" Type="Edm.String"/>
+                <Property Name="STATUS" Type="Edm.String"/>
+                <Property Name="STATUS_DESC" Type="Edm.String"/>
+                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
+                <Property Name="POSTING_DATE" Type="Edm.String"/>
+                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
+                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead_TO_VIM_NON_PO_ITEMS" FromRole="NPoVimHead" ToRole="NPoVimItem"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="NPoVimHead" ToRole="NPoVimAttachments"/>
+            </EntityType>
+            <EntityType Name="CODERHEAD">
+                <Key>
+                    <PropertyRef Name="REQUEST_NO"/>
+                </Key>
+                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
+                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
+                <Property Name="CURRENCY" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
+                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
+                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
+                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
+                <Property Name="COMPANY_CODE" Type="Edm.String"/>
+                <Property Name="STATUS" Type="Edm.String"/>
+                <Property Name="STATUS_DESC" Type="Edm.String"/>
+                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
+                <Property Name="POSTING_DATE" Type="Edm.String"/>
+                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
+                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD_TO_VIM_NON_PO_ITEMS" FromRole="CODERHEAD" ToRole="NPoVimItem"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="CODERHEAD" ToRole="NPoVimAttachments"/>
+            </EntityType>
+            <EntityType Name="RejectedTabForIU">
+                <Key>
+                    <PropertyRef Name="REQUEST_NO"/>
+                </Key>
+                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="INVOICE_NUMBER" Type="Edm.String"/>
+                <Property Name="INVOICE_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String"/>
+                <Property Name="CURRENCY" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NUMBER" Type="Edm.String"/>
+                <Property Name="VENDOR_STATUS" Type="Edm.String"/>
+                <Property Name="SUPPLIER_NAME" Type="Edm.String"/>
+                <Property Name="APPROVER_ROLE" Type="Edm.String"/>
+                <Property Name="EXPENSE_TYPE" Type="Edm.String"/>
+                <Property Name="COMPANY_CODE" Type="Edm.String"/>
+                <Property Name="STATUS" Type="Edm.String"/>
+                <Property Name="STATUS_DESC" Type="Edm.String"/>
+                <Property Name="INVOICE_REF_NO" Type="Edm.String"/>
+                <Property Name="POSTING_DATE" Type="Edm.String"/>
+                <Property Name="APPROVED_COMMENT" Type="Edm.String"/>
+                <Property Name="REJECTED_COMMENT" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE" Type="Edm.String"/>
+                <Property Name="CURRENT_ASSIGNEE_ROLE" Type="Edm.String"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ITEMS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU_TO_VIM_NON_PO_ITEMS" FromRole="RejectedTabForIU" ToRole="NPoVimItem"/>
+                <NavigationProperty Name="TO_VIM_NON_PO_ATTCHEMENTS" Relationship="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS" FromRole="RejectedTabForIU" ToRole="NPoVimAttachments"/>
+            </EntityType>
+            <EntityType Name="NPoVimItem">
+                <Key>
+                    <PropertyRef Name="REQUEST_NO"/>
+                </Key>
+                <Property Name="REQUEST_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="SR_NO" Type="Edm.Int32"/>
+                <Property Name="MATERIAL" Type="Edm.String"/>
+                <Property Name="COST_OBJECT_TYPE" Type="Edm.String"/>
+                <Property Name="COST_OBJECT" Type="Edm.String"/>
+                <Property Name="GL_ACCOUNT" Type="Edm.String"/>
+                <Property Name="QUANTITY" Type="Edm.String"/>
+                <Property Name="PRICE" Type="Edm.String"/>
+            </EntityType>
             <ComplexType Name="InvoiceItem">
                 <Property Name="description" Type="Edm.String"/>
                 <Property Name="totalPrice" Type="Edm.String"/>
                 <Property Name="quantity" Type="Edm.String"/>
             </ComplexType>
-            <ComplexType Name="return_NON_PO_VIM_triggerOCR">
+            <ComplexType Name="return_NON_PO_VIM_OCR_CODER_SIDE_triggerOCR">
                 <Property Name="totalInvoiceAmount" Type="Edm.String"/>
-                <Property Name="items" Type="Collection(NON_PO_VIM.InvoiceItem)" Nullable="false"/>
+                <Property Name="items" Type="Collection(NON_PO_VIM_OCR_CODER_SIDE.InvoiceItem)" Nullable="false"/>
                 <Property Name="status" Type="Edm.String"/>
                 <Property Name="rawJson" Type="Edm.String"/>
+                <Property Name="cgst" Type="Edm.String"/>
+                <Property Name="sgst" Type="Edm.String"/>
             </ComplexType>
             <Association Name="NPoVimHead_TO_VIM_NON_PO_ITEMS">
-                <End Role="NPoVimHead" Type="NON_PO_VIM.NPoVimHead" Multiplicity="*"/>
-                <End Role="NPoVimItem" Type="NON_PO_VIM.NPoVimItem" Multiplicity="*"/>
+                <End Role="NPoVimHead" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead" Multiplicity="*"/>
+                <End Role="NPoVimItem" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimItem" Multiplicity="*"/>
             </Association>
             <Association Name="NPoVimHead_TO_VIM_NON_PO_ATTCHEMENTS">
-                <End Role="NPoVimHead" Type="NON_PO_VIM.NPoVimHead" Multiplicity="*"/>
-                <End Role="NPoVimAttachments" Type="NON_PO_VIM.NPoVimAttachments" Multiplicity="*"/>
+                <End Role="NPoVimHead" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimHead" Multiplicity="*"/>
+                <End Role="NPoVimAttachments" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimAttachments" Multiplicity="*"/>
             </Association>
             <Association Name="CODERHEAD_TO_VIM_NON_PO_ITEMS">
-                <End Role="CODERHEAD" Type="NON_PO_VIM.CODERHEAD" Multiplicity="*"/>
-                <End Role="NPoVimItem" Type="NON_PO_VIM.NPoVimItem" Multiplicity="*"/>
+                <End Role="CODERHEAD" Type="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD" Multiplicity="*"/>
+                <End Role="NPoVimItem" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimItem" Multiplicity="*"/>
             </Association>
             <Association Name="CODERHEAD_TO_VIM_NON_PO_ATTCHEMENTS">
-                <End Role="CODERHEAD" Type="NON_PO_VIM.CODERHEAD" Multiplicity="*"/>
-                <End Role="NPoVimAttachments" Type="NON_PO_VIM.NPoVimAttachments" Multiplicity="*"/>
-            </Association>
-            <Association Name="NPoVimHeadList_TO_VIM_NON_PO_ITEMS">
-                <End Role="NPoVimHeadList" Type="NON_PO_VIM.NPoVimHeadList" Multiplicity="*"/>
-                <End Role="NPoVimItem" Type="NON_PO_VIM.NPoVimItem" Multiplicity="*"/>
-            </Association>
-            <Association Name="NPoVimHeadList_TO_VIM_NON_PO_ATTCHEMENTS">
-                <End Role="NPoVimHeadList" Type="NON_PO_VIM.NPoVimHeadList" Multiplicity="*"/>
-                <End Role="NPoVimAttachments" Type="NON_PO_VIM.NPoVimAttachments" Multiplicity="*"/>
+                <End Role="CODERHEAD" Type="NON_PO_VIM_OCR_CODER_SIDE.CODERHEAD" Multiplicity="*"/>
+                <End Role="NPoVimAttachments" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimAttachments" Multiplicity="*"/>
             </Association>
             <Association Name="RejectedTabForIU_TO_VIM_NON_PO_ITEMS">
-                <End Role="RejectedTabForIU" Type="NON_PO_VIM.RejectedTabForIU" Multiplicity="*"/>
-                <End Role="NPoVimItem" Type="NON_PO_VIM.NPoVimItem" Multiplicity="*"/>
+                <End Role="RejectedTabForIU" Type="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU" Multiplicity="*"/>
+                <End Role="NPoVimItem" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimItem" Multiplicity="*"/>
             </Association>
             <Association Name="RejectedTabForIU_TO_VIM_NON_PO_ATTCHEMENTS">
-                <End Role="RejectedTabForIU" Type="NON_PO_VIM.RejectedTabForIU" Multiplicity="*"/>
-                <End Role="NPoVimAttachments" Type="NON_PO_VIM.NPoVimAttachments" Multiplicity="*"/>
-            </Association>
-            <Association Name="ApprovedTabForFinalIU_TO_VIM_NON_PO_ITEMS">
-                <End Role="ApprovedTabForFinalIU" Type="NON_PO_VIM.ApprovedTabForFinalIU" Multiplicity="*"/>
-                <End Role="NPoVimItem" Type="NON_PO_VIM.NPoVimItem" Multiplicity="*"/>
-            </Association>
-            <Association Name="ApprovedTabForFinalIU_TO_VIM_NON_PO_ATTCHEMENTS">
-                <End Role="ApprovedTabForFinalIU" Type="NON_PO_VIM.ApprovedTabForFinalIU" Multiplicity="*"/>
-                <End Role="NPoVimAttachments" Type="NON_PO_VIM.NPoVimAttachments" Multiplicity="*"/>
+                <End Role="RejectedTabForIU" Type="NON_PO_VIM_OCR_CODER_SIDE.RejectedTabForIU" Multiplicity="*"/>
+                <End Role="NPoVimAttachments" Type="NON_PO_VIM_OCR_CODER_SIDE.NPoVimAttachments" Multiplicity="*"/>
             </Association>
         </Schema>
     </edmx:DataServices>

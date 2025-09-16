@@ -21,13 +21,18 @@
                 <smartFilterBar:ControlConfiguration
                     key="INVOICE_DATE"
                     visibleInAdvancedArea="true"
+                    label="Invoice Date"
                     conditionType="{
-								module: 'sap.ui.comp.config.condition.DateRangeType'
-							}"
+                        module: 'sap.ui.comp.config.condition.DateRangeType'
+                    }"
                 />
+                
             </smartFilterBar:controlConfiguration>
-        </smartFilterBar:SmartFilterBar>
 
+            
+
+
+        </smartFilterBar:SmartFilterBar>
         <IconTabBar
             id="idIconTabBarMulti"
             expanded="{device>/isNoPhone}"
@@ -79,7 +84,31 @@
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                            value='\{"columnKey": "INVOICE_DATE","leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "filterProperty": "INVOICE_DATE", "columnIndex": "3" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Invoice Date"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Source Type"
+                                        wrapping="true"
+                                    />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
                                         />
                                     </customData>
                                     <Label
@@ -96,8 +125,19 @@
                                 >
                                     <cells>
                                         <Text text="{REQUEST_NO}" />
+                                        <Text text="{
+                                            path: 'INVOICE_DATE',
+                                            formatter: '.formatODataDate'
+                                        }" />
+                                        <Text text="{
+                                            path: 'SOURCE_TYPE',
+                                            formatter: '.formatSourceType'
+                                        }" />
                                         <ObjectStatus
-                                            text="{ path: 'APPROVER_ROLE', formatter: '.statusFormattertest' }"
+                                            text="{
+                                                path: 'APPROVER_ROLE',
+                                                formatter: '.statusFormattertest'
+                                            }"
                                             state="Indication13"
                                             inverted="true"
                                             class="noWrapText"
@@ -108,7 +148,6 @@
                         </Table>
                     </smartTable:SmartTable>
                 </IconTabFilter>
-
                 <IconTabFilter
                     key="rejected"
                     icon="./Images/Rejected.png"
@@ -149,11 +188,23 @@
                                         wrapping="true"
                                     />
                                 </Column>
+                                        <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Source Type"
+                                        wrapping="true"
+                                    />
+                                </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
                                         />
                                     </customData>
                                     <Label
@@ -166,10 +217,13 @@
                                 <ColumnListItem
                                     vAlign="Middle"
                                     type="Active"
-                                  
                                 >
                                     <cells>
                                         <Text text="{REQUEST_NO}" />
+                                           <Text text="{
+                                            path: 'SOURCE_TYPE',
+                                            formatter: '.formatSourceType'
+                                        }" />
                                         <ObjectStatus
                                             text="Rejected"
                                             state="Indication11"
@@ -182,8 +236,7 @@
                         </Table>
                     </smartTable:SmartTable>
                 </IconTabFilter>
-
-                 <IconTabFilter
+                <IconTabFilter
                     key="approved"
                     icon="./Images/submitted.png"
                     text="Approved"
@@ -223,11 +276,23 @@
                                         wrapping="true"
                                     />
                                 </Column>
+                                        <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label
+                                        text="Source Type"
+                                        wrapping="true"
+                                    />
+                                </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "5" }'
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
                                         />
                                     </customData>
                                     <Label
@@ -240,10 +305,13 @@
                                 <ColumnListItem
                                     vAlign="Middle"
                                     type="Active"
-                                   
                                 >
                                     <cells>
                                         <Text text="{REQUEST_NO}" />
+                                           <Text text="{
+                                            path: 'SOURCE_TYPE',
+                                            formatter: '.formatSourceType'
+                                        }" />
                                         <ObjectStatus
                                             text="Approved"
                                             state="Indication14"

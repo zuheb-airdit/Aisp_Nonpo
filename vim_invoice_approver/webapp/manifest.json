@@ -17,7 +17,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "/odata/v2/non-po-vim/",
+                "uri": "odata/v2/non-po-vim-ocr-customer-side/",
                 "type": "OData",
                 "settings": {
                     "annotations": [
@@ -122,9 +122,9 @@
                     "name": "RouteCoderDetails",
                     "pattern": "RouteCoderDetails/{reqNo}",
                     "target": [
-                      "TargetDetailsPage"
+                        "TargetDetailsPage"
                     ]
-                  }
+                }
             ],
             "targets": {
                 "TargetInvoiveLists": {
@@ -134,7 +134,7 @@
                 "TargetDetailsPage": {
                     "id": "CoderObjPage",
                     "name": "CoderObjPage"
-                  }
+                }
             }
         },
         "rootView": {

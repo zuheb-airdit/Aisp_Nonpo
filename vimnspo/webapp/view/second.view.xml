@@ -18,68 +18,6 @@
     >
         <content>
             <l:Splitter width="100%">
-                <Page
-                    enableScrolling="false"
-                    showHeader="false"
-                >
-                    <layoutData>
-                        <l:SplitterLayoutData size="55%" />
-                    </layoutData>
-                    <content>
-                        <!-- <PDFViewer
-                            source="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-                            width="100%"
-                            isTrustedSource="true"
-                            showDownloadButton="false"
-                        /> -->
-                        <upload:UploadSet
-                            id="uploadSet"
-                            instantUpload="false"
-                            uploadEnabled="true"
-                            beforeItemAdded="onBeforeItemAdded"
-                            maxFileSize="10"
-                            afterItemAdded="setVisibility"
-                            sameFilenameAllowed="false"
-                            multiple="false"
-                            visible="false"
-                        >
-                            <upload:toolbar />
-                        </upload:UploadSet>
-
-                        <!-- <PDFViewer
-                            id="pdfViewer"
-                            source=""
-                            width="100%"
-                            height="100%"
-                            isTrustedSource="true"
-                            showDownloadButton="false"
-                            visible="false"
-                        /> -->
-                        <!-- <VBox id="idContainer" visible="false">
-                           <Button text="Remove"></Button> -->
-                        <VBox class="sapUiTinyMargin">
-                            <!-- Right-aligned Clear Button -->
-                            <HBox justifyContent="End">
-                                <Button
-                                    icon="sap-icon://clear-all"
-                                    id="idClearBtn"
-                                    tooltip="Close Preview"
-                                    press=".onClearPreview"
-                                    visible="false"
-                                />
-                            </HBox>
-
-                            <!-- PDF Preview Iframe -->
-                            <core:HTML
-                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
-                                sanitizeContent="false"
-                            />
-                        </VBox>
-
-                        <!-- </VBox> -->
-                    </content>
-                </Page>
-
                 <f:DynamicPage
                     showFooter="true"
                     id="idDynamicPage"
@@ -141,6 +79,68 @@
                         </OverflowToolbar>
                     </f:footer>
                 </f:DynamicPage>
+
+                <Page
+                    enableScrolling="false"
+                    showHeader="false"
+                >
+                    <layoutData>
+                        <l:SplitterLayoutData size="55%" />
+                    </layoutData>
+                    <content>
+                        <!-- <PDFViewer
+                            source="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                            width="100%"
+                            isTrustedSource="true"
+                            showDownloadButton="false"
+                        /> -->
+                        <upload:UploadSet
+                            id="uploadSet"
+                            instantUpload="false"
+                            uploadEnabled="true"
+                            beforeItemAdded="onBeforeItemAdded"
+                            maxFileSize="10"
+                            afterItemAdded="setVisibility"
+                            sameFilenameAllowed="false"
+                            multiple="false"
+                            visible="false"
+                        >
+                            <upload:toolbar />
+                        </upload:UploadSet>
+
+                        <!-- <PDFViewer
+                            id="pdfViewer"
+                            source=""
+                            width="100%"
+                            height="100%"
+                            isTrustedSource="true"
+                            showDownloadButton="false"
+                            visible="false"
+                        /> -->
+                        <!-- <VBox id="idContainer" visible="false">
+                           <Button text="Remove"></Button> -->
+                        <VBox class="sapUiTinyMargin">
+                            <!-- Right-aligned Clear Button -->
+                            <HBox justifyContent="End">
+                                <Button
+                                    icon="sap-icon://clear-all"
+                                    id="idClearBtn"
+                                    tooltip="Close Preview"
+                                    press=".onClearPreview"
+                                    visible="false"
+                                />
+                            </HBox>
+
+                            <!-- PDF Preview Iframe -->
+                            <core:HTML
+                                content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
+                                sanitizeContent="false"
+                            />
+                        </VBox>
+
+                        <!-- </VBox> -->
+                    </content>
+                </Page>
             </l:Splitter>
         </content>
     </Page>
