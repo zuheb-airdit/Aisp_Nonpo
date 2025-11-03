@@ -16,3 +16,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Target the splitter grip for the specific Splitter with id="previewSplitterLayout" */
+#previewSplitterLayout .sapUiLoSplitterBarGrip {
+    display: none !important;
+}
+
+/* Ensure the splitter bar itself (if visible) is also hidden */
+#previewSplitterLayout .sapUiLoSplitterBar {
+    display: none !important;
+}

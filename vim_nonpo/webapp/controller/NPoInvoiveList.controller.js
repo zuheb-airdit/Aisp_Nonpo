@@ -1,6 +1,8 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
-], (Controller) => {
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, Filter, FilterOperator) => {
     "use strict";
 
     return Controller.extend("com.nonpo.vimnonpo.controller.NPoInvoiveList", {
@@ -9,6 +11,7 @@ sap.ui.define([
                 .getRouter()
                 .getRoute("RouteNPoInvoiveList")
                 .attachPatternMatched(this._onRouteMatchedwithoutid, this);
+
         },
 
         _onRouteMatchedwithoutid: function () {
@@ -35,14 +38,14 @@ sap.ui.define([
             }
         },
 
-         formatSourceType: function (sSourceType) {
+        formatSourceType: function (sSourceType) {
             if (sSourceType) {
                 // Remove the '02-' prefix and return only the 'Portal' part
                 return sSourceType.split('-')[1];
             }
             return sSourceType;
         },
-    
+
 
         statusFormattertest: function (role) {
             return `InProcess-${role}`
@@ -83,8 +86,46 @@ sap.ui.define([
             return `${day}-${month}-${year}`;
         },
 
-        currencyFormatter: function(amount){
-           return `${amount} INR`
+        currencyFormatter: function (amount) {
+            return `${amount} INR`
+        },
+
+        onRebindPending: function (oEvent) {
+            // Get binding parameters from the event
+            var oBindingParams = oEvent.getParameter("bindingParams");
+
+            // Create filter for STATUS eq 25
+            var oFilter = new Filter({
+                path: "STATUS",
+                operator: FilterOperator.EQ,
+                value1: 25
+            });
+
+            // Add the filter to binding parameters
+            oBindingParams.filters.push(oFilter);
+            var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+            oBindingParams.sorter.push(oSorter);
+            // Optionally set additional binding parameters
+        },
+
+        // Handler for Rejected Tab
+        onRebindRejected: function (oEvent) {
+            // Get binding parameters from the event
+            var oBindingParams = oEvent.getParameter("bindingParams");
+
+            // Create filter for STATUS eq 3
+            var oFilter = new Filter({
+                path: "STATUS",
+                operator: FilterOperator.EQ,
+                value1: 3
+            });
+
+            // Add the filter to binding parameters
+            oBindingParams.filters.push(oFilter);
+            var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+            oBindingParams.sorter.push(oSorter);
+
+            // Optionally set additional binding parameters
         }
     });
 });

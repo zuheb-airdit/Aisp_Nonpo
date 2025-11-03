@@ -32,6 +32,12 @@ sap.ui.define(
           requestNumber: requestNumber,
         });
       },
+
+      handleBeforeRebind_Table: function(oEvent){
+        let oBindingParams = oEvent.getParameter("bindingParams");
+        var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+        oBindingParams.sorter.push(oSorter);
+      }
     });
   }
 );

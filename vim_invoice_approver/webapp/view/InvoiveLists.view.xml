@@ -12,12 +12,22 @@
         showHeader="true"
         title="Invoice Approval - NonPO"
     >
+        <!-- SmartFilterBar for Pending Tab -->
         <smartFilterBar:SmartFilterBar
-            id="smartFilterBar"
-            entitySet="CODERHEAD"
-            persistencyKey="SmartFilter_Explored"
+            id="smartFilterBarPending"
+            entitySet="PendingTabForInternalUsers"
+            persistencyKey="SmartFilter_Pending"
+            visible="true"
         >
-            <smartFilterBar:controlConfiguration>
+            <!-- <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    key="REQUEST_NO"
+                    visibleInAdvancedArea="true"
+                    label="Request Number"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.Type'
+                    }"
+                />
                 <smartFilterBar:ControlConfiguration
                     key="INVOICE_DATE"
                     visibleInAdvancedArea="true"
@@ -26,13 +36,88 @@
                         module: 'sap.ui.comp.config.condition.DateRangeType'
                     }"
                 />
-                
-            </smartFilterBar:controlConfiguration>
-
-            
-
-
+                <smartFilterBar:ControlConfiguration
+                    key="TOTAL_AMOUNT"
+                    visibleInAdvancedArea="true"
+                    label="Total Amount"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.NumericType'
+                    }"
+                />
+            </smartFilterBar:controlConfiguration> -->
         </smartFilterBar:SmartFilterBar>
+
+        <!-- SmartFilterBar for Rejected Tab -->
+        <smartFilterBar:SmartFilterBar
+            id="smartFilterBarRejected"
+            entitySet="RejectedTabForIU"
+            persistencyKey="SmartFilter_Rejected"
+            visible="false"
+        >
+            <!-- <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    key="REQUEST_NO"
+                    visibleInAdvancedArea="true"
+                    label="Request Number"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.Type'
+                    }"
+                />
+                <smartFilterBar:ControlConfiguration
+                    key="INVOICE_DATE"
+                    visibleInAdvancedArea="true"
+                    label="Invoice Date"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.DateRangeType'
+                    }"
+                />
+                <smartFilterBar:ControlConfiguration
+                    key="TOTAL_AMOUNT"
+                    visibleInAdvancedArea="true"
+                    label="Total Amount"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.NumericType'
+                    }"
+                />
+            </smartFilterBar:controlConfiguration> -->
+        </smartFilterBar:SmartFilterBar>
+
+        <!-- SmartFilterBar for Approved Tab -->
+        <smartFilterBar:SmartFilterBar
+            id="smartFilterBarApproved"
+            entitySet="ApprovedTabForFinalIU"
+            persistencyKey="SmartFilter_Approved"
+            visible="false"
+        >
+            <!-- <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration
+                    key="REQUEST_NO"
+                    visibleInAdvancedArea="true"
+                    label="Request Number"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.Type'
+                    }"
+                />
+                <smartFilterBar:ControlConfiguration
+                    key="INVOICE_DATE"
+                    visibleInAdvancedArea="true"
+                    label="Invoice Date"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.DateRangeType'
+                    }"
+                />
+                <smartFilterBar:ControlConfiguration
+                    key="TOTAL_AMOUNT"
+                    visibleInAdvancedArea="true"
+                    label="Total Amount"
+                    conditionType="{
+                        module: 'sap.ui.comp.config.condition.NumericType'
+                    }"
+                />
+            </smartFilterBar:controlConfiguration> -->
+        </smartFilterBar:SmartFilterBar>
+
+        <!-- IconTabBar -->
         <IconTabBar
             id="idIconTabBarMulti"
             expanded="{device>/isNoPhone}"
@@ -46,21 +131,22 @@
                     text="Pending"
                 >
                     <smartTable:SmartTable
+                        id="idSmartTablePend"
                         entitySet="PendingTabForInternalUsers"
-                        smartFilterId="smartFilterBar"
+                        smartFilterId="smartFilterBarPending"
                         enableExport="true"
                         beforeExport="onBeforeExport"
                         useVariantManagement="true"
                         useTablePersonalisation="true"
                         header="Pending Requests"
                         showRowCount="true"
-                        persistencyKey="SmartTableRefApp_Explored"
+                        persistencyKey="SmartTable_Pending"
                         enableAutoBinding="true"
                         tableType="ResponsiveTable"
                         demandPopin="true"
                         enableAutoColumnWidth="false"
                         beforeRebindTable="onRebindPending"
-                        id="idSmartTablePend"
+                        requestAtLeastFields="APPROVER_ROLE"
                     >
                         <Table
                             selectionChange="selectionChangeHandlerRregister"
@@ -68,76 +154,83 @@
                             growingThreshold="10"
                         >
                             <columns>
-                                <Column>
+                                <Column
+                                    hAlign="Center"
+                                    demandPopin="true"
+                                    minScreenWidth="Tablet"
+                                    popinDisplay="Inline"
+                                    width="auto"
+                                >
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                            value='\{"columnKey": "COMPANY_LOGO","leadingProperty": "COMPANY_LOGO", "sortProperty": "COMPANY_LOGO", "filterProperty": "COMPANY_LOGO", "columnIndex": "0" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Req Number"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Company Logo" wrapping="true" />
                                 </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "INVOICE_DATE","leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "filterProperty": "INVOICE_DATE", "columnIndex": "3" }'
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "1" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Invoice Date"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Req Number" wrapping="true" />
                                 </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
+                                            value='\{"columnKey": "INVOICE_DATE","leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "filterProperty": "INVOICE_DATE", "columnIndex": "2" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Source Type"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Invoice Date" wrapping="true" />
                                 </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
+                                            value='\{"columnKey": "TOTAL_AMOUNT","leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "filterProperty": "TOTAL_AMOUNT", "columnIndex": "6" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Status"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Amount" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "7" }'
+                                        />
+                                    </customData>
+                                    <Label text="Source Type" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "8" }'
+                                        />
+                                    </customData>
+                                    <Label text="Status" wrapping="true" />
                                 </Column>
                             </columns>
                             <items>
-                                <ColumnListItem
-                                    vAlign="Middle"
-                                    type="Navigation"
-                                    press="onClickInvoiceList"
-                                >
+                                <ColumnListItem vAlign="Middle" type="Navigation" press="onClickInvoiceList">
                                     <cells>
+                                        <Avatar
+                                            src="{= ${COMPANY_LOGO} ? ${COMPANY_LOGO} : './Images/Industry.png' }"
+                                            displaySize="S"
+                                            initials="{= ${VendorName} ? ${VendorName}.substring(0, 2).toUpperCase() : 'AB' }"
+                                            displayShape="Circle"
+                                            class="sapUiTinyMarginEnd"
+                                        />
                                         <Text text="{REQUEST_NO}" />
-                                        <Text text="{
-                                            path: 'INVOICE_DATE',
-                                            formatter: '.formatODataDate'
-                                        }" />
-                                        <Text text="{
-                                            path: 'SOURCE_TYPE',
-                                            formatter: '.formatSourceType'
-                                        }" />
+                                        <Text text="{ path: 'INVOICE_DATE', formatter: '.formatODataDate' }" />
+                                        <ObjectNumber number="{TOTAL_AMOUNT}" />
+                                        <Text text="{ path: 'SOURCE_TYPE', formatter: '.formatSourceType' }" />
                                         <ObjectStatus
-                                            text="{
-                                                path: 'APPROVER_ROLE',
-                                                formatter: '.statusFormattertest'
-                                            }"
+                                            text="{ path: 'APPROVER_ROLE', formatter: '.statusFormattertest' }"
                                             state="Indication13"
                                             inverted="true"
                                             class="noWrapText"
@@ -154,21 +247,21 @@
                     text="Rejected"
                 >
                     <smartTable:SmartTable
+                        id="idSmartTabRej"
                         entitySet="RejectedTabForIU"
-                        smartFilterId="smartFilterBar"
+                        smartFilterId="smartFilterBarRejected"
                         enableExport="true"
                         beforeExport="onBeforeExport"
                         useVariantManagement="true"
                         useTablePersonalisation="true"
-                        header="Pending Requests"
+                        header="Rejected Requests"
                         showRowCount="true"
-                        persistencyKey="SmartTableRefApp_Explored"
+                        persistencyKey="SmartTable_Rejected"
                         enableAutoBinding="true"
                         tableType="ResponsiveTable"
                         demandPopin="true"
                         enableAutoColumnWidth="false"
-                        beforeRebindTable="onRebindPending"
-                        id="idSmartTabRej"
+                        beforeRebindTable="onRebindReject"
                     >
                         <Table
                             selectionChange="selectionChangeHandlerRregister"
@@ -176,54 +269,81 @@
                             growingThreshold="10"
                         >
                             <columns>
-                                <Column>
+                                <Column
+                                    hAlign="Center"
+                                    demandPopin="true"
+                                    minScreenWidth="Tablet"
+                                    popinDisplay="Inline"
+                                    width="auto"
+                                >
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                            value='\{"columnKey": "COMPANY_LOGO","leadingProperty": "COMPANY_LOGO", "sortProperty": "COMPANY_LOGO", "filterProperty": "COMPANY_LOGO", "columnIndex": "0" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Req Number"
-                                        wrapping="true"
-                                    />
-                                </Column>
-                                        <Column>
-                                    <customData>
-                                        <core:CustomData
-                                            key="p13nData"
-                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
-                                        />
-                                    </customData>
-                                    <Label
-                                        text="Source Type"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Company Logo" wrapping="true" />
                                 </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "1" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Status"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Req Number" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "INVOICE_DATE","leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "filterProperty": "INVOICE_DATE", "columnIndex": "3" }'
+                                        />
+                                    </customData>
+                                    <Label text="Invoice Date" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "TOTAL_AMOUNT","leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "filterProperty": "TOTAL_AMOUNT", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label text="Amount" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "6" }'
+                                        />
+                                    </customData>
+                                    <Label text="Source Type" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "7" }'
+                                        />
+                                    </customData>
+                                    <Label text="Status" wrapping="true" />
                                 </Column>
                             </columns>
                             <items>
-                                <ColumnListItem
-                                    vAlign="Middle"
-                                    type="Active"
-                                >
+                                <ColumnListItem vAlign="Middle" type="Active">
                                     <cells>
+                                        <Avatar
+                                            src="{= ${COMPANY_LOGO} ? ${COMPANY_LOGO} : './Images/Industry.png' }"
+                                            displaySize="S"
+                                            initials="{= ${VendorName} ? ${VendorName}.substring(0, 2).toUpperCase() : 'AB' }"
+                                            displayShape="Circle"
+                                            class="sapUiTinyMarginEnd"
+                                        />
                                         <Text text="{REQUEST_NO}" />
-                                           <Text text="{
-                                            path: 'SOURCE_TYPE',
-                                            formatter: '.formatSourceType'
-                                        }" />
+                                        <Text text="{ path: 'INVOICE_DATE', formatter: '.formatODataDate' }" />
+                                        <ObjectNumber number="{TOTAL_AMOUNT}" />
+                                        <Text text="{ path: 'SOURCE_TYPE', formatter: '.formatSourceType' }" />
                                         <ObjectStatus
                                             text="Rejected"
                                             state="Indication11"
@@ -242,21 +362,21 @@
                     text="Approved"
                 >
                     <smartTable:SmartTable
+                        id="idSmartTabApp"
                         entitySet="ApprovedTabForFinalIU"
-                        smartFilterId="smartFilterBar"
+                        smartFilterId="smartFilterBarApproved"
                         enableExport="true"
                         beforeExport="onBeforeExport"
                         useVariantManagement="true"
                         useTablePersonalisation="true"
-                        header="Pending Requests"
+                        header="Approved Requests"
                         showRowCount="true"
-                        persistencyKey="SmartTableRefApp_Explored"
+                        persistencyKey="SmartTable_Approved"
                         enableAutoBinding="true"
                         tableType="ResponsiveTable"
                         demandPopin="true"
                         enableAutoColumnWidth="false"
-                        beforeRebindTable="onRebindPending"
-                        id="idSmartTabApp"
+                        beforeRebindTable="onRebindApproved"
                     >
                         <Table
                             selectionChange="selectionChangeHandlerRregister"
@@ -264,54 +384,81 @@
                             growingThreshold="10"
                         >
                             <columns>
-                                <Column>
+                                <Column
+                                    hAlign="Center"
+                                    demandPopin="true"
+                                    minScreenWidth="Tablet"
+                                    popinDisplay="Inline"
+                                    width="auto"
+                                >
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "0" }'
+                                            value='\{"columnKey": "COMPANY_LOGO","leadingProperty": "COMPANY_LOGO", "sortProperty": "COMPANY_LOGO", "filterProperty": "COMPANY_LOGO", "columnIndex": "0" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Req Number"
-                                        wrapping="true"
-                                    />
-                                </Column>
-                                        <Column>
-                                    <customData>
-                                        <core:CustomData
-                                            key="p13nData"
-                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "5" }'
-                                        />
-                                    </customData>
-                                    <Label
-                                        text="Source Type"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Company Logo" wrapping="true" />
                                 </Column>
                                 <Column>
                                     <customData>
                                         <core:CustomData
                                             key="p13nData"
-                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "6" }'
+                                            value='\{"columnKey": "REQUEST_NO","leadingProperty": "REQUEST_NO", "sortProperty": "REQUEST_NO", "filterProperty": "REQUEST_NO", "columnIndex": "1" }'
                                         />
                                     </customData>
-                                    <Label
-                                        text="Status"
-                                        wrapping="true"
-                                    />
+                                    <Label text="Req Number" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "INVOICE_DATE","leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "filterProperty": "INVOICE_DATE", "columnIndex": "3" }'
+                                        />
+                                    </customData>
+                                    <Label text="Invoice Date" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "TOTAL_AMOUNT","leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "filterProperty": "TOTAL_AMOUNT", "columnIndex": "5" }'
+                                        />
+                                    </customData>
+                                    <Label text="Amount" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "SOURCE_TYPE","leadingProperty": "SOURCE_TYPE", "sortProperty": "SOURCE_TYPE", "filterProperty": "SOURCE_TYPE", "columnIndex": "6" }'
+                                        />
+                                    </customData>
+                                    <Label text="Source Type" wrapping="true" />
+                                </Column>
+                                <Column>
+                                    <customData>
+                                        <core:CustomData
+                                            key="p13nData"
+                                            value='\{"columnKey": "Status","leadingProperty": "Status", "sortProperty": "Status", "filterProperty": "Status", "columnIndex": "8" }'
+                                        />
+                                    </customData>
+                                    <Label text="Status" wrapping="true" />
                                 </Column>
                             </columns>
                             <items>
-                                <ColumnListItem
-                                    vAlign="Middle"
-                                    type="Active"
-                                >
+                                <ColumnListItem vAlign="Middle" type="Active">
                                     <cells>
+                                        <Avatar
+                                            src="{= ${COMPANY_LOGO} ? ${COMPANY_LOGO} : './Images/Industry.png' }"
+                                            displaySize="S"
+                                            initials="{= ${VendorName} ? ${VendorName}.substring(0, 2).toUpperCase() : 'AB' }"
+                                            displayShape="Circle"
+                                            class="sapUiTinyMarginEnd"
+                                        />
                                         <Text text="{REQUEST_NO}" />
-                                           <Text text="{
-                                            path: 'SOURCE_TYPE',
-                                            formatter: '.formatSourceType'
-                                        }" />
+                                        <Text text="{ path: 'INVOICE_DATE', formatter: '.formatODataDate' }" />
+                                        <ObjectNumber number="{TOTAL_AMOUNT}" />
+                                        <Text text="{ path: 'SOURCE_TYPE', formatter: '.formatSourceType' }" />
                                         <ObjectStatus
                                             text="Approved"
                                             state="Indication14"

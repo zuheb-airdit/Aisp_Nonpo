@@ -1,8 +1,10 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/ui/export/Spreadsheet",
+    "sap/ui/export/library"
 
-], (Controller, MessageBox) => {
+], (Controller, MessageBox, Spreadsheet, library) => {
     "use strict";
 
     return Controller.extend("com.invoiceapp.viminvoiceapprover.controller.CoderObjPage", {
@@ -36,6 +38,9 @@ sap.ui.define([
 
             oODataModel.read("/NPoVimHead", {
                 filters: aFilters,
+                urlParameters: {
+                    "$expand": "TO_VIM_NON_PO_ITEMS,TO_VIM_NON_PO_ATTCHEMENTS"
+                },
                 success: function (oData) {
                     if (oData && oData.results && oData.results.length > 0) {
                         const headData = oData.results[0];
@@ -102,25 +107,63 @@ sap.ui.define([
         },
 
         onExportExcel: function () {
-            const aCols = [
-                { label: "Sr No", property: "SrNo" },
-                { label: "Material", property: "Material" },
-                { label: "Cost Object Type", property: "CostObjectType" },
-                { label: "Cost Object", property: "CostObject" },
-                { label: "GL/Account", property: "GLAccount" },
-                { label: "QTY", property: "Qty" },
-                { label: "Price", property: "Price" },
-                { label: "Total", property: "Total" }
+            const oTable = this.byId("myTable");
+            const oTableModel = this.getView().getModel("tableModel");
+            const oTableData = oTableModel.getProperty("/results");
+            const oHeadData = this.getView().getModel("headData").getData();
+
+            if (!oTableData || oTableData.length === 0) {
+                MessageBox.warning("No data available to export.");
+                return;
+            }
+
+            // Check if Spreadsheet is available
+            if (!Spreadsheet) {
+                MessageBox.error("Excel export is not supported in this SAPUI5 version. Please ensure SAPUI5 version 1.50 or higher.");
+                return;
+            }
+
+            // Define columns for the Excel export using fully qualified EdmType
+            const aColumns = [
+                { label: "Sr No", property: "SrNo", type: sap.ui.export.EdmType.String },
+                { label: "Material", property: "Material", type: sap.ui.export.EdmType.String },
+                { label: "Cost Object Type", property: "CostObjectType", type: sap.ui.export.EdmType.String },
+                { label: "Cost Object", property: "CostObject", type: sap.ui.export.EdmType.String },
+                { label: "GL/Account", property: "GLAccount", type: sap.ui.export.EdmType.String },
+                { label: "QTY", property: "Qty", type: sap.ui.export.EdmType.Number },
+                { label: "Price", property: "Total", type: sap.ui.export.EdmType.Number }
             ];
 
+            // Add Total Amount as a custom row
+            const aData = oTableData.concat([{
+                SrNo: "Total",
+                Material: "",
+                CostObjectType: "",
+                CostObject: "",
+                GLAccount: "",
+                Qty: "",
+                Total: oHeadData.TOTAL_AMOUNT || 0
+            }]);
+
+            // Create Spreadsheet instance
             const oSettings = {
-                workbook: { columns: aCols },
-                dataSource: this.getView().getModel("tableModel").getProperty("/results"),
-                fileName: "Item_Details.xlsx"
+                workbook: {
+                    columns: aColumns,
+                    context: {
+                        title: "Invoice Items Export",
+                        sheetName: "InvoiceItems"
+                    }
+                },
+                dataSource: aData,
+                fileName: `Invoice_Items_${new Date().toISOString().split("T")[0]}.xlsx`
             };
 
-            const oSpreadsheet = new sap.ui.export.Spreadsheet(oSettings);
-            oSpreadsheet.build().finally(() => oSpreadsheet.destroy());
+            const oSpreadsheet = new Spreadsheet(oSettings);
+            oSpreadsheet.build().then(() => {
+                oSpreadsheet.destroy();
+            }).catch((oError) => {
+                MessageBox.error("Error exporting to Excel: " + oError.message);
+            });
         },
 
         formatDate: function (dateInput) {
@@ -146,6 +189,10 @@ sap.ui.define([
 
 
         onApproveInvoice: function () {
+            let commApp = this.byId("commentTextArea");
+            if (commApp) {
+                commApp.setValue(""); // Corrected: Call setValue as a method
+            }
             if (!this._oCommentDialog) {
                 this.loadFragment({
                     name: "com.invoiceapp.viminvoiceapprover.fragments.Approved"
@@ -160,6 +207,10 @@ sap.ui.define([
         },
 
         onRejectInvoice: function () {
+            let commApp = this.byId("commentTextArea1");
+            if (commApp) {
+                commApp.setValue(""); // Corrected: Call setValue as a method
+            }
             if (!this._oCommentDialog) {
                 this.loadFragment({
                     name: "com.invoiceapp.viminvoiceapprover.fragments.Rejected"
@@ -183,7 +234,7 @@ sap.ui.define([
             this._oCommentDialog.close();
 
             // Call payload builder with comment
-            this._buildFinalPayloadAndSend(sComment,"APPROVE");
+            this._buildFinalPayloadAndSend(sComment, "APPROVE");
         },
 
         onRejectFrag: function () {
@@ -196,7 +247,7 @@ sap.ui.define([
             this._oCommentDialog.close();
 
             // Call payload builder with comment
-            this._buildFinalPayloadAndSend(sComment,"REJECT");
+            this._buildFinalPayloadAndSend(sComment, "REJECT");
         },
 
         onCommentCancel: function () {
@@ -205,7 +256,7 @@ sap.ui.define([
             }
         },
 
-        _buildFinalPayloadAndSend: function (sComment,type) {
+        _buildFinalPayloadAndSend: function (sComment, type) {
             const oRouter = this.getOwnerComponent().getRouter();
             const oView = this.getView();
             oView.setBusy(true)
@@ -224,7 +275,7 @@ sap.ui.define([
                     CURRENT_ASSIGNEE_ROLE: oHeadData.APPROVER_ROLE || "",
                     INVOICE_NUMBER: oHeadData.INVOICE_NUMBER || "",
                     INVOICE_DATE: this._formatDate(oHeadData.INVOICE_DATE),
-                    TOTAL_AMOUNT: oHeadData.TOTAL_AMOUNT || "0.00",
+                    TOTAL_AMOUNT: parseInt(oHeadData.TOTAL_AMOUNT || "0.00"),
                     EXPENSE_TYPE: oHeadData.EXPENSE_TYPE || "",
                     APPROVED_COMMENT: sComment // inject comment
                 }],
@@ -234,8 +285,8 @@ sap.ui.define([
                     COST_OBJECT_TYPE: item.CostObjectType || "",
                     COST_OBJECT: item.CostObject || "",
                     GL_ACCOUNT: item.GLAccount || "",
-                    QUANTITY: item.Qty || "0",
-                    PRICE: item.Total || "0"
+                    QUANTITY: parseInt(item.Qty || "0"),
+                    PRICE: parseInt(item.Total || "0")
                 })),
                 Attachment: aAttachments.map(att => ({
                     VendorCode: att.VendorCode || "",

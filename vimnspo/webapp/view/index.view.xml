@@ -28,25 +28,17 @@
                     label="Invoice Number"
                 />
 
-                <smartFilterBar:ControlConfiguration
-                    key="INVOICE_DATE"
-                    visibleInAdvancedArea="true"
-                    conditionType="{ module:'sap.ui.comp.config.condition.DateRangeType' }"
-                    label="Invoice Date"
-                />
 
                 <smartFilterBar:ControlConfiguration
                     key="TOTAL_AMOUNT"
                     visibleInAdvancedArea="true"
                     label="Total Amount"
-
                 />
 
                 <smartFilterBar:ControlConfiguration
-                    key="STATUS_DESC"
+                    key="VENDOR_STATUS"
                     visibleInAdvancedArea="true"
                     label="Status"
-
                 />
             </smartFilterBar:controlConfiguration>
         </smartFilterBar:SmartFilterBar>
@@ -73,7 +65,7 @@
             useVariantManagement="true"
             useTablePersonalisation="true"
             enableCopy="false"
-            requestAtLeastFields="projectType"
+            requestAtLeastFields="projectType,VENDOR_STATUS"
             showFullScreenButton="true"
             enableAutoColumnWidth="false"
         >
@@ -108,21 +100,66 @@
                 backgroundDesign="Solid"
             >
                 <columns>
+                    <Column
+                        hAlign="Center"
+                        demandPopin="true"
+                        minScreenWidth="Tablet"
+                        popinDisplay="Inline"
+                        width="auto"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "COMPANY_LOGO","leadingProperty": "COMPANY_LOGO", "sortProperty": "COMPAN_LOGO", "filterProperty": "COMPAN_LOGO", "columnIndex": "0" }'
+                            />
+                        </customData>
+                        <Label
+                            text="Profile Image"
+                            wrapping="true"
+                        />
+                    </Column>
                     <Column>
                         <customData>
                             <core:CustomData
                                 key="p13nData"
-                                value='\{"columnKey": "INVOICE_NUMBER", "autoColumnWidth": \{ "visibleProperty": "INVOICE_NUMBER","min": 10, "max": 14  }, "columnIndex": 0, "leadingProperty": "INVOICE_NUMBER", "sortProperty": "INVOICE_NUMBER", "additionalProperty": "INVOICE_NUMBER"}'
+                                value='\{"columnKey": "INVOICE_NUMBER", "autoColumnWidth": \{ "visibleProperty": "INVOICE_NUMBER","min": 10, "max": 14  }, "columnIndex": 1, "leadingProperty": "INVOICE_NUMBER", "sortProperty": "INVOICE_NUMBER", "additionalProperty": "INVOICE_NUMBER"}'
                             />
                         </customData>
                         <Text text="Invoice Number" />
+                    </Column>
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "SUPPLIER_NAME", "autoColumnWidth": \{ "visibleProperty": "SUPPLIER_NAME","min": 10, "max": 14  }, "columnIndex": 2, "leadingProperty": "SUPPLIER_NAME", "sortProperty": "SUPPLIER_NAME", "additionalProperty": "SUPPLIER_NAME"}'
+                            />
+                        </customData>
+                        <Text text="Supplier Name" />
+                    </Column>
+                    <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "SUPPLIER_NUMBER", "autoColumnWidth": \{ "visibleProperty": "SUPPLIER_NUMBER","min": 10, "max": 14  }, "columnIndex": 3, "leadingProperty": "SUPPLIER_NUMBER", "sortProperty": "SUPPLIER_NUMBER", "additionalProperty": "SUPPLIER_NUMBER"}'
+                            />
+                        </customData>
+                        <Text text="Supplier Number" />
+                    </Column>
+                     <Column>
+                        <customData>
+                            <core:CustomData
+                                key="p13nData"
+                                value='\{"columnKey": "CREATED_ON", "autoColumnWidth": \{ "visibleProperty": "CREATED_ON","min": 12, "max": 14  }, "columnIndex": 6, "leadingProperty": "CREATED_ON", "sortProperty": "CREATED_ON", "additionalProperty": "CREATED_ON"}'
+                            />
+                        </customData>
+                        <Text text="Created On" />
                     </Column>
 
                     <Column>
                         <customData>
                             <core:CustomData
                                 key="p13nData"
-                                value='\{"columnKey": "INVOICE_DATE", "autoColumnWidth": \{ "visibleProperty": "INVOICE_DATE","min": 12, "max": 14  }, "columnIndex": 1, "leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "additionalProperty": "INVOICE_DATE"}'
+                                value='\{"columnKey": "INVOICE_DATE", "autoColumnWidth": \{ "visibleProperty": "INVOICE_DATE","min": 12, "max": 14  }, "columnIndex": 4, "leadingProperty": "INVOICE_DATE", "sortProperty": "INVOICE_DATE", "additionalProperty": "INVOICE_DATE"}'
                             />
                         </customData>
                         <Text text="Document Date" />
@@ -131,7 +168,7 @@
                         <customData>
                             <core:CustomData
                                 key="p13nData"
-                                value='\{"columnKey": "TOTAL_AMOUNT", "autoColumnWidth": \{ "visibleProperty": "TOTAL_AMOUNT","min": 12, "max": 14  }, "columnIndex": 2, "leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "additionalProperty": "TOTAL_AMOUNT"}'
+                                value='\{"columnKey": "TOTAL_AMOUNT", "autoColumnWidth": \{ "visibleProperty": "TOTAL_AMOUNT","min": 12, "max": 14  }, "columnIndex": 5, "leadingProperty": "TOTAL_AMOUNT", "sortProperty": "TOTAL_AMOUNT", "additionalProperty": "TOTAL_AMOUNT"}'
                             />
                         </customData>
                         <Text text="Amount" />
@@ -140,7 +177,7 @@
                         <customData>
                             <core:CustomData
                                 key="p13nData"
-                                value='\{"columnKey": "STATUS_DESC", "autoColumnWidth": \{ "visibleProperty": "STATUS_DESC","min": 7, "max": 10  }, "columnIndex": 3, "leadingProperty": "STATUS_DESC", "sortProperty": "STATUS_DESC", "additionalProperty": "STATUS_DESC"}'
+                                value='\{"columnKey": "STATUS_DESC", "autoColumnWidth": \{ "visibleProperty": "STATUS_DESC","min": 7, "max": 10  }, "columnIndex": 7, "leadingProperty": "STATUS_DESC", "sortProperty": "STATUS_DESC", "additionalProperty": "STATUS_DESC"}'
                             />
                         </customData>
                         <Text text="Status" />
@@ -152,20 +189,28 @@
                         type="Navigation"
                         press="handleRowClick"
                     >
+                        <Avatar
+                            src="{= ${COMPANY_LOGO} ? ${COMPANY_LOGO} : './Images/Industry.png' }"
+                            displaySize="S"
+                            initials="{= ${SUPPLIER_NAME} ? ${SUPPLIER_NAME}.substring(0, 2).toUpperCase() : 'AB' }"
+                            displayShape="Circle"
+                            class="sapUiTinyMarginEnd"
+                        />
                         <ObjectStatus
                             text="{INVOICE_NUMBER}"
                             state="Indication05"
+                        />
+                        <Text text="{SUPPLIER_NAME}" />
+                        <Text text="{SUPPLIER_NUMBER}" />
+                        <Text
+                            text="{ path: 'CREATED_ON', formatter: '.formatter.date' }"
                         />
                         <Text
                             text="{ path: 'INVOICE_DATE', formatter: '.formatter.date' }"
                         />
 
                         <ObjectNumber
-                            number="{
-                           path:'TOTAL_AMOUNT',
-                           type:'sap.ui.model.type.Float',
-                           formatOptions:{ minFractionDigits:2, maxFractionDigits:2 }
-                         }"
+                            number="{TOTAL_AMOUNT}"
                             unit="INR"
                         />
                         <!-- <Text text="{STATUS_DESC}" /> -->

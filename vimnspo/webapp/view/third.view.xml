@@ -43,10 +43,22 @@
                     </m:Breadcrumbs>
                 </breadcrumbs> -->
                     <expandedHeading>
-                        <m:Title
-                            text="INV: {vimHeader>/REQUEST_NO}"
-                            wrapping="true"
-                        />
+                        <m:VBox class="sapUiSmallMarginBegin">
+                            <m:Title
+                                text="INV: {vimHeader>/REQUEST_NO}"
+                                wrapping="true"
+                            />
+                            <m:HBox alignItems="Center">
+                                <m:Label
+                                    text="Vendor:"
+                                    class="sapUiTinyMarginEnd"
+                                />
+                                <m:Text
+                                    text="{vimHeader>/SUPPLIER_NAME}"
+                                    wrapping="false"
+                                />
+                            </m:HBox>
+                        </m:VBox>
                     </expandedHeading>
                     <snappedHeading>
                         <m:HBox
@@ -54,9 +66,9 @@
                             alignItems="Center"
                         >
                             <m:Avatar
-                                src="./Images/objPageIcon.png"
+                                src="{= ${vimHeader>/COMPANY_LOGO} ? ${vimHeader>/COMPNAY_LOGO} : './Images/Industry.png' }"
                                 displaySize="S"
-                                displayShape="Square"
+                                displayShape="Cicle"
                                 class="sapUiTinyMarginEnd"
                             />
                             <m:VBox wrap="Wrap">
@@ -68,6 +80,16 @@
                                     text="INV: {vimHeader>/REQUEST_NO}"
                                     wrapping="true"
                                 />
+                                <m:HBox alignItems="Center">
+                                    <m:Label
+                                        text="Vendor:"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <m:Text
+                                        text="{vimHeader>/SUPPLIER_NAME}"
+                                        wrapping="true"
+                                    />
+                                </m:HBox>
                             </m:VBox>
                         </m:HBox>
                     </snappedHeading>
@@ -82,9 +104,9 @@
                     class="sapUiSmallMarginBottom"
                 >
                     <m:Avatar
-                        src="./Images/objPageIcon.png"
+                        src="{= ${vimHeader>/COMPANY_LOGO} ? ${vimHeader>/COMPNAY_LOGO} : './Images/Industry.png' }"
                         displaySize="L"
-                        displayShape="Square"
+                        displayShape="Circle"
                         class="sapUiMediumMarginEnd"
                     />
 

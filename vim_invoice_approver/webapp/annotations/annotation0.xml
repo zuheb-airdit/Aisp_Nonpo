@@ -36,10 +36,10 @@
                             <PropertyValue Property="Value" Path="SOURCE_TYPE" />
                             <PropertyValue Property="Label" String="Source Type" />
                         </Record> -->
-                        <Record Type="UI.DataField">
+                        <!-- <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="TOTAL_AMOUNT" />
                             <PropertyValue Property="Label" String="Amount" />
-                        </Record>
+                        </Record> -->
                     </Collection>
                 </Annotation>
             </Annotations>
@@ -63,10 +63,10 @@
                             <PropertyValue Property="Value" Path="INVOICE_DATE" />
                             <PropertyValue Property="Label" String="Date" />
                         </Record>
-                        <Record Type="UI.DataField">
+                        <!-- <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="TOTAL_AMOUNT" />
                             <PropertyValue Property="Label" String="Amount" />
-                        </Record>
+                        </Record> -->
                     </Collection>
                 </Annotation>
             </Annotations>
@@ -94,11 +94,15 @@
                             <PropertyValue Property="Value" Path="TOTAL_AMOUNT" />
                             <PropertyValue Property="Label" String="Amount" />
                         </Record>
+                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="SUPPLIER_INVOICE_REF_NO" />
+                            <PropertyValue Property="Label" String="Supplier Ref No" />
+                        </Record>
                     </Collection>
                 </Annotation>
             </Annotations>
 
-            <Annotations Target="SAP.CODERHEAD">
+               <Annotations Target="SAP.PendingTabForInternalUsers">
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
                         <PropertyPath>REQUEST_NO</PropertyPath>
@@ -109,10 +113,32 @@
                 </Annotation>
             </Annotations>
 
-            <Annotations Target="SAP.CODERHEAD/REQUEST_NO">
+            <Annotations Target="SAP.RejectedTabForIU">
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>REQUEST_NO</PropertyPath>
+                        <PropertyPath>SUPPLIER_NUMBER</PropertyPath>
+                        <PropertyPath>INVOICE_NUMBER</PropertyPath>
+                        <PropertyPath>SOURCE_TYPE</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+
+             <Annotations Target="SAP.ApprovedTabForFinalIU">
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>REQUEST_NO</PropertyPath>
+                        <PropertyPath>SUPPLIER_NUMBER</PropertyPath>
+                        <PropertyPath>INVOICE_NUMBER</PropertyPath>
+                        <PropertyPath>SOURCE_TYPE</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="SAP.PendingTabForInternalUsers/REQUEST_NO">
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="CollectionPath" String="CODERHEAD" />
+                        <PropertyValue Property="CollectionPath" String="PendingTabForInternalUsers"/>
                         <PropertyValue Property="SearchSupported" Bool="true" />
                         <PropertyValue Property="Parameters">
                             <Collection>
@@ -127,7 +153,81 @@
                 <Annotation Term="Common.Label" String="Request No" />
             </Annotations>
 
-            <Annotations Target="SAP.CODERHEAD/SOURCE_TYPE">
+            <Annotations Target="SAP.PendingTabForInternalUsers/SOURCE_TYPE">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="SourceType" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="SOURCE_TYPE" />
+                                    <PropertyValue Property="ValueListProperty" String="SOURCE_TYPE" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Source Type" />
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
+            </Annotations>
+
+            <Annotations Target="SAP.PendingTabForInternalUsers/SUPPLIER_NUMBER">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="PendingTabForInternalUsers" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="SUPPLIER_NUMBER" />
+                                    <PropertyValue Property="ValueListProperty" String="SUPPLIER_NUMBER" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Supplier No" />
+            </Annotations>
+
+            <Annotations Target="SAP.PendingTabForInternalUsers/INVOICE_NUMBER">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="PendingTabForInternalUsers" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="INVOICE_NUMBER" />
+                                    <PropertyValue Property="ValueListProperty" String="INVOICE_NUMBER" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Invoice No" />
+            </Annotations>
+
+            <!-- //reje -->
+             <Annotations Target="SAP.RejectedTabForIU/REQUEST_NO">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="RejectedTabForIU" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="REQUEST_NO" />
+                                    <PropertyValue Property="ValueListProperty" String="REQUEST_NO" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Request No" />
+            </Annotations>
+
+            <Annotations Target="SAP.RejectedTabForIU/SOURCE_TYPE">
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
                         <PropertyValue Property="CollectionPath" String="SourceType" />
@@ -144,12 +244,13 @@
                     </Record>
                 </Annotation>
                 <Annotation Term="Common.Label" String="Source Type" />
+                                <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
             </Annotations>
 
-            <Annotations Target="SAP.CODERHEAD/SUPPLIER_NUMBER">
+            <Annotations Target="SAP.RejectedTabForIU/SUPPLIER_NUMBER">
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="CollectionPath" String="CODERHEAD" />
+                        <PropertyValue Property="CollectionPath" String="RejectedTabForIU" />
                         <PropertyValue Property="SearchSupported" Bool="true" />
                         <PropertyValue Property="Parameters">
                             <Collection>
@@ -164,10 +265,84 @@
                 <Annotation Term="Common.Label" String="Supplier No" />
             </Annotations>
 
-            <Annotations Target="SAP.CODERHEAD/INVOICE_NUMBER">
+            <Annotations Target="SAP.RejectedTabForIU/INVOICE_NUMBER">
                 <Annotation Term="Common.ValueList">
                     <Record Type="Common.ValueListType">
-                        <PropertyValue Property="CollectionPath" String="CODERHEAD" />
+                        <PropertyValue Property="CollectionPath" String="RejectedTabForIU" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="INVOICE_NUMBER" />
+                                    <PropertyValue Property="ValueListProperty" String="INVOICE_NUMBER" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Invoice No" />
+            </Annotations>
+            <!-- //app -->
+             <Annotations Target="SAP.ApprovedTabForFinalIU/REQUEST_NO">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="ApprovedTabForFinalIU" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="REQUEST_NO" />
+                                    <PropertyValue Property="ValueListProperty" String="REQUEST_NO" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Request No" />
+            </Annotations>
+
+            <Annotations Target="SAP.ApprovedTabForFinalIU/SOURCE_TYPE">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="SourceType" />
+                        <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="SOURCE_TYPE" />
+                                    <PropertyValue Property="ValueListProperty" String="SOURCE_TYPE" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Source Type" />
+                                <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
+            </Annotations>
+
+            <Annotations Target="SAP.ApprovedTabForFinalIU/SUPPLIER_NUMBER">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="ApprovedTabForFinalIU" />
+                        <PropertyValue Property="SearchSupported" Bool="true" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="SUPPLIER_NUMBER" />
+                                    <PropertyValue Property="ValueListProperty" String="SUPPLIER_NUMBER" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Supplier No" />
+            </Annotations>
+
+            <Annotations Target="SAP.ApprovedTabForFinalIU/INVOICE_NUMBER">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="ApprovedTabForFinalIU" />
                         <PropertyValue Property="SearchSupported" Bool="true" />
                         <PropertyValue Property="Parameters">
                             <Collection>
@@ -182,5 +357,6 @@
                 <Annotation Term="Common.Label" String="Invoice No" />
             </Annotations>
         </Schema>
+
     </edmx:DataServices>
 </edmx:Edmx>

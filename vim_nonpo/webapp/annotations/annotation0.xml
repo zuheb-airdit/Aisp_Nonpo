@@ -110,6 +110,7 @@
                     </Record>
                 </Annotation>
                 <Annotation Term="Common.Label" String="Source Type"/>
+                                <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
             </Annotations>
 
              <Annotations Target="SAP.CODERHEAD/SUPPLIER_NUMBER">

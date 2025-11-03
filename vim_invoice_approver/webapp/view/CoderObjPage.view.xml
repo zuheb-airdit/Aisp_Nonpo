@@ -31,12 +31,10 @@
                     isChildPage="true"
                     upperCaseAnchorBar="false"
                 >
-                    <!-- <u:layoutData>
-                        <l:SplitterLayoutData
+                    <!-- <u:layoutData><l:SplitterLayoutData
                             size="100%"
                             id="previewSplitterLayout"
-                        />
-                    </u:layoutData> -->
+                        /></u:layoutData> -->
                     <u:headerTitle>
                         <u:ObjectPageDynamicHeaderTitle>
                             <u:breadcrumbs>
@@ -50,10 +48,22 @@
                                 </Breadcrumbs>
                             </u:breadcrumbs>
                             <u:expandedHeading>
-                                <Title
-                                    text="INV NO : {headData>/INVOICE_NUMBER}"
-                                    level="H2"
-                                />
+                                <VBox class="sapUiSmallMarginBegin">
+                                    <Title
+                                        text="INV NO : {headData>/INVOICE_NUMBER}"
+                                        level="H2"
+                                    />
+                                    <HBox alignItems="Center">
+                                        <Label
+                                            text="Vendor:"
+                                            class="sapUiTinyMarginEnd"
+                                        />
+                                        <Text
+                                            text="{headData>/SUPPLIER_NAME}"
+                                            wrapping="false"
+                                        />
+                                    </HBox>
+                                </VBox>
                             </u:expandedHeading>
                             <u:actions>
                                 <!-- <Button
@@ -66,7 +76,6 @@
                             </u:actions>
                         </u:ObjectPageDynamicHeaderTitle>
                     </u:headerTitle>
-
                     <u:headerContent>
                         <FlexBox
                             wrap="Wrap"
@@ -74,12 +83,11 @@
                             alignItems="Stretch"
                         >
                             <Avatar
-                                src="./Images/object.png"
+                                src="{= ${headData>/COMPANY_LOGO} ? ${headData>/COMPNAY_LOGO} : './Images/Industry.png' }"
                                 displaySize="L"
-                                displayShape="Square"
+                                displayShape="Circle"
                                 class="sapUiMediumMarginEnd"
                             />
-
                             <VBox
                                 class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
                             >
@@ -107,7 +115,6 @@
                                     />
                                 </HBox>
                             </VBox>
-
                             <VBox
                                 class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
                             >
@@ -132,7 +139,6 @@
                                     />
                                 </HBox>
                             </VBox>
-
                             <VBox
                                 class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
                             >
@@ -145,13 +151,11 @@
                                         value="{headData>/EXPENSE_TYPE}"
                                         visible="{headData>/editable}"
                                     /> -->
-
                                     <Text text="{headData>/EXPENSE_TYPE}" />
                                 </HBox>
                             </VBox>
                         </FlexBox>
                     </u:headerContent>
-
                     <u:sections>
                         <u:ObjectPageSection
                             title="Item Details"
@@ -166,8 +170,7 @@
                                                 <!-- <Button
                                                     text="+ Add"
                                                     press=".onAddItem"
-                                                />
-                                                <Button
+                                                /><Button
                                                     text="Delete"
                                                     press=".onDeleteItem"
                                                 /> -->
@@ -177,44 +180,42 @@
                                                     press=".onExportExcel"
                                                 />
                                             </Toolbar>
-
                                             <Table
                                                 id="myTable"
                                                 mode="SingleSelectLeft"
                                                 items="{path: 'tableModel>/results'}"
                                             >
                                                 <columns>
-                                                    <Column>
+                                                    <Column width="10%">
                                                         <Label text="Sr No" />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="25%">
                                                         <Label
                                                             text="Material"
                                                         />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="15%">
                                                         <Label
                                                             text="Cost Object Type"
                                                         />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="15%">
                                                         <Label
                                                             text="Cost Object"
                                                         />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="15%">
                                                         <Label
                                                             text="GL/Account"
                                                         />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="10%">
                                                         <Label text="QTY" />
                                                     </Column>
-                                                    <Column>
+                                                    <Column width="10%">
                                                         <Label text="Price" />
                                                     </Column>
                                                 </columns>
-
                                                 <items>
                                                     <ColumnListItem>
                                                         <cells>
@@ -224,42 +225,36 @@
                                                                     text="{tableModel>SrNo}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- Material -->
                                                             <VBox>
                                                                 <Text
                                                                     text="{tableModel>Material}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- Cost Object Type -->
                                                             <VBox>
                                                                 <Text
                                                                     text="{tableModel>CostObjectType}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- Cost Object -->
                                                             <VBox>
                                                                 <Text
                                                                     text="{tableModel>CostObject}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- GL Account -->
                                                             <VBox>
                                                                 <Text
                                                                     text="{tableModel>GLAccount}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- Quantity -->
                                                             <VBox>
                                                                 <Text
                                                                     text="{tableModel>Qty}"
                                                                 />
                                                             </VBox>
-
                                                             <!-- Price -->
                                                             <VBox>
                                                                 <Text
@@ -270,7 +265,6 @@
                                                     </ColumnListItem>
                                                 </items>
                                             </Table>
-
                                             <HBox
                                                 justifyContent="End"
                                                 class="sapUiSmallMarginTop"
@@ -311,7 +305,6 @@
                                                         press="onExtractOCR"
                                                     /> -->
                                                 </HBox>
-
                                                 <!-- List -->
                                                 <List
                                                     id="attachmentsList"
@@ -348,7 +341,6 @@
                                                                     />
                                                                 </VBox>
                                                             </HBox>
-
                                                             <!-- Right -->
                                                             <HBox
                                                                 alignItems="Center"
@@ -413,7 +405,6 @@
                             id="previewSplitterLayout"
                         />
                     </layoutData>
-
                     <content>
                         <VBox class="sapUiTinyMargin">
                             <HBox justifyContent="End">
@@ -424,7 +415,6 @@
                                     press=".onClosePreview"
                                 />
                             </HBox>
-
                             <core:HTML
                                 content='&lt;iframe id="pdfFrame" width="100%" height="700px" style="border:none;"&gt;&lt;/iframe&gt;'
                             />

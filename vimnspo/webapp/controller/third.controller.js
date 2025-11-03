@@ -24,6 +24,9 @@ sap.ui.define(
 
           const oData = await new Promise((resolve, reject) => {
             oModel.read("/NPoVimHead", {
+              urlParameters: {
+                "$expand": "TO_VIM_NON_PO_ITEMS,TO_VIM_NON_PO_ATTCHEMENTS"
+              },
               filters: [
                 new sap.ui.model.Filter(
                   "REQUEST_NO",
@@ -38,11 +41,13 @@ sap.ui.define(
 
           if (oData.results.length > 0) {
             const oHeaderData = oData.results[0];
-            const isApproved = oHeaderData.STATUS_DESC === "Approved" || oHeaderData.STATUS_DESC === "In-Process CODER";
+            const isApproved = oHeaderData.STATUS_DESC === "Approved" || oHeaderData.STATUS_DESC.toLowerCase().includes("in-process");
 
             that.getView().byId("itemTableBox").setVisible(isApproved);
             that.getView().byId("attachmentsBox").setVisible(isApproved);
             that.getView().byId("waitingStrip").setVisible(!isApproved);
+
+            console.log(oHeaderData)
 
             const oJsonModel = new sap.ui.model.json.JSONModel(oHeaderData);
             that.getView().setModel(oJsonModel, "vimHeader");

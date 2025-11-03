@@ -16,11 +16,11 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (DateFormat) {
     statusState: function (sStatus) {
       switch (sStatus.toLowerCase()) {
         case "uploaded":
-          return "Indication03";
+          return "Indication18";
         case "in-approval":
-          return "Error";
+          return "Indication13";
         case "approved":
-          return "Information";
+          return "Indication14";
         default:
           return "None";
       }

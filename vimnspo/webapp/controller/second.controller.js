@@ -150,7 +150,7 @@ sap.ui.define(
               COMPANY_CODE: "1000",
               INVOICE_NUMBER: invoiceNumber,
               INVOICE_DATE: formattedDate,
-              TOTAL_AMOUNT: totalAmount,
+              TOTAL_AMOUNT: parseInt(totalAmount),
               SOURCE_TYPE : "02-Portal"
             }
           ],

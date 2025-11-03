@@ -13,6 +13,59 @@
     </edmx:Reference>
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local1">
+            <Annotations Target="SAP.NPoVimHeadList/INVOICE_NUMBER">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="NPoVimHeadList"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="INVOICE_NUMBER"/>
+                                    <PropertyValue Property="ValueListProperty" String="INVOICE_NUMBER"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Request No"/>
+            </Annotations>
+
+              <Annotations Target="SAP.NPoVimHeadList/TOTAL_AMOUNT">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="NPoVimHeadList"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="TOTAL_AMOUNT"/>
+                                    <PropertyValue Property="ValueListProperty" String="TOTAL_AMOUNT"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.Label" String="Request No"/>
+            </Annotations>
+
+              <Annotations Target="SAP.NPoVimHeadList/VENDOR_STATUS">
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="CollectionPath" String="VENDOR_STATUS_F4HELP"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="VENDOR_STATUS"/>
+                                    <PropertyValue Property="ValueListProperty" String="VENDOR_STATUS"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                                <Annotation Term="Common.ValueListWithFixedValues" Bool="true" />
+            </Annotations>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

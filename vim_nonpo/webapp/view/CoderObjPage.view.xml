@@ -44,16 +44,53 @@
                                 </Breadcrumbs>
                             </u:breadcrumbs>
                             <u:expandedHeading>
-                                <Title
-                                    text="INV NO : {headData>/INVOICE_NUMBER}"
-                                    level="H2"
-                                />
+                                <VBox class="sapUiSmallMarginBegin">
+                                    <Title
+                                        text="INV NO : {headData>/INVOICE_NUMBER}"
+                                        level="H2"
+                                        wrapping="true"
+                                    />
+                                    <HBox alignItems="Center">
+                                        <Label
+                                            text="Vendor:"
+                                            class="sapUiTinyMarginEnd"
+                                        />
+                                        <Text
+                                            text="{headData>/SUPPLIER_NAME}"
+                                            wrapping="false"
+                                        />
+                                    </HBox>
+                                </VBox>
                             </u:expandedHeading>
                             <u:snappedHeading>
-                                <Title
-                                    text="INV NO : {headData>/INVOICE_NUMBER}"
-                                    level="H2"
-                                />
+                                <HBox
+                                    wrap="NoWrap"
+                                    alignItems="Center"
+                                >
+                                    <Avatar
+                                        src="./Images/Industry.png"
+                                        displaySize="S"
+                                        displayShape="Circle"
+                                        class="sapUiTinyMarginEnd"
+                                    />
+                                    <VBox wrap="Wrap">
+                                        <Title
+                                            text="INV NO : {headData>/INVOICE_NUMBER}"
+                                            level="H2"
+                                            wrapping="true"
+                                        />
+                                        <HBox alignItems="Center">
+                                            <Label
+                                                text="Vendor:"
+                                                class="sapUiTinyMarginEnd"
+                                            />
+                                            <Text
+                                                text="{headData>/SUPPLIER_NAME}"
+                                                wrapping="true"
+                                            />
+                                        </HBox>
+                                    </VBox>
+                                </HBox>
                             </u:snappedHeading>
                             <u:actions>
                                 <Button
@@ -74,9 +111,9 @@
                             alignItems="Stretch"
                         >
                             <Avatar
-                                src="./Images/object.png"
+                                src="{= ${headData>/COMPANY_LOGO} ? ${headData>/COMPNAY_LOGO} : './Images/Industry.png' }"
                                 displaySize="L"
-                                displayShape="Square"
+                                displayShape="Circle"
                                 class="sapUiMediumMarginEnd sapUiTinyMarginTop"
                             />
 
@@ -195,11 +232,7 @@
                                                     text="Delete"
                                                     press=".onDeleteItem"
                                                 />
-                                                <Button
-                                                    icon="sap-icon://excel-attachment"
-                                                    text="Export"
-                                                    press=".onExportExcel"
-                                                />
+                                               
                                             </Toolbar>
 
                                             <Table
@@ -422,6 +455,7 @@
                                                     <Button
                                                         text="Extract Details Using OCR"
                                                         press="onExtractOCR"
+                                                        visible="{= ${headData>/SOURCE_TYPE} !== '01-Email'}"
                                                     />
                                                 </HBox>
 

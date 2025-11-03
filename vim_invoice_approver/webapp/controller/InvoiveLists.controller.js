@@ -1,6 +1,8 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
-], (Controller) => {
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, Filter, FilterOperator) => {
     "use strict";
 
     return Controller.extend("com.invoiceapp.viminvoiceapprover.controller.InvoiveLists", {
@@ -44,7 +46,7 @@ sap.ui.define([
             }
             return sSourceType;
         },
-    
+
 
         onTabSelect: function (oEvent) {
             const selectedKey = oEvent.getParameter("key");
@@ -77,6 +79,70 @@ sap.ui.define([
             const month = String(dateValue.getMonth() + 1).padStart(2, '0');
             const year = dateValue.getFullYear();
             return `${day}-${month}-${year}`;
+        },
+
+        onRebindPending: function (oEvent) {
+            let bParams = oEvent.getParameter("bindingParams");
+            bParams.filters.push(new Filter("STATUS", FilterOperator.EQ, 4))
+            var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+            bParams.sorter.push(oSorter);
+        },
+
+        onRebindApproved: function (oEvent) {
+            let bParams = oEvent.getParameter("bindingParams");
+            bParams.filters.push(new Filter("STATUS", FilterOperator.EQ, 5))
+            var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+            bParams.sorter.push(oSorter);
+        },
+        onRebindReject: function (oEvent) {
+            let bParams = oEvent.getParameter("bindingParams");
+            bParams.filters.push(new Filter("STATUS", FilterOperator.EQ, 3))
+            var oSorter = new sap.ui.model.Sorter("CREATED_ON", true); // true for descending
+            bParams.sorter.push(oSorter);
+        },
+
+          onTabSelect: function (oEvent) {
+            // Get the selected tab key
+            var sSelectedKey = oEvent.getParameter("key");
+
+            // Get references to the SmartFilterBars
+            var oSmartFilterBarPending = this.byId("smartFilterBarPending");
+            var oSmartFilterBarRejected = this.byId("smartFilterBarRejected");
+            var oSmartFilterBarApproved = this.byId("smartFilterBarApproved");
+
+            // Get references to the SmartTables
+            var oSmartTablePending = this.byId("idSmartTablePend");
+            var oSmartTableRejected = this.byId("idSmartTabRej");
+            var oSmartTableApproved = this.byId("idSmartTabApp");
+
+            // Manage visibility and rebind based on the selected tab
+            switch (sSelectedKey) {
+                case "pending":
+                    oSmartFilterBarPending.setVisible(true);
+                    oSmartFilterBarRejected.setVisible(false);
+                    oSmartFilterBarApproved.setVisible(false);
+                    oSmartTablePending.rebindTable();
+                    break;
+                case "rejected":
+                    oSmartFilterBarPending.setVisible(false);
+                    oSmartFilterBarRejected.setVisible(true);
+                    oSmartFilterBarApproved.setVisible(false);
+                    oSmartTableRejected.rebindTable();
+                    break;
+                case "approved":
+                    oSmartFilterBarPending.setVisible(false);
+                    oSmartFilterBarRejected.setVisible(false);
+                    oSmartFilterBarApproved.setVisible(true);
+                    oSmartTableApproved.rebindTable();
+                    break;
+                default:
+                    // Default to showing Pending filter bar and table
+                    oSmartFilterBarPending.setVisible(true);
+                    oSmartFilterBarRejected.setVisible(false);
+                    oSmartFilterBarApproved.setVisible(false);
+                    oSmartTablePending.rebindTable();
+                    break;
+            }
         }
     });
 });

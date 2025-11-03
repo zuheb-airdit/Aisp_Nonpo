@@ -4,7 +4,7 @@ sap.ui.define([
     "sap/base/security/URLListValidator"
 
 
-], (Controller, MessageBox , URLListValidator) => {
+], (Controller, MessageBox, URLListValidator) => {
     "use strict";
 
     return Controller.extend("com.nonpo.vimnonpo.controller.CoderObjPage", {
@@ -39,8 +39,11 @@ sap.ui.define([
                 new sap.ui.model.Filter("REQUEST_NO", sap.ui.model.FilterOperator.EQ, this.reqNumber)
             ];
 
-            oODataModel.read("/NPoVimHead", {
+            oODataModel.read("/CODERHEAD", {
                 filters: aFilters,
+                urlParameters: {
+                    "$expand": "TO_VIM_NON_PO_ITEMS,TO_VIM_NON_PO_ATTCHEMENTS"
+                },
                 success: function (oData) {
                     if (oData && oData.results && oData.results.length > 0) {
                         const headData = oData.results[0];
@@ -197,13 +200,13 @@ sap.ui.define([
                     total += price;
                 }
             });
-            
+
             (this.aInput2Refs || []).forEach(oInput => {
                 const val = parseFloat(oInput.getValue());
                 if (!isNaN(val)) {
                     total += val;
                 }
-            });        
+            });
 
             // Update total text
             if (oText) {
@@ -212,7 +215,7 @@ sap.ui.define([
         },
         onClickAdd: function () {
             var oItemsVBox = this.byId("itemsVBox");
-        
+
             var oInput1 = new sap.m.Input({
                 placeholder: "Label",
                 value: "",
@@ -222,48 +225,48 @@ sap.ui.define([
                 valueLiveUpdate: true,
                 layoutData: new sap.m.FlexItemData({ styleClass: "sapUiTinyMarginEnd" })
             });
-        
+
             var oInput2 = new sap.m.Input({
                 placeholder: "%",
                 value: "",
                 width: "5rem",
                 layoutData: new sap.m.FlexItemData()
             });
-        
+
             // Add input reference for later total calculation
             this.aInput2Refs.push(oInput2);
-        
+
             var oDeleteBtn = new sap.m.Button({
                 icon: "sap-icon://delete",
                 type: "Transparent",
                 press: () => {
                     // Remove this HBox from VBox
                     oItemsVBox.removeItem(oHBox);
-        
+
                     // Remove input2 ref from aInput2Refs
                     const index = this.aInput2Refs.indexOf(oInput2);
                     if (index !== -1) {
                         this.aInput2Refs.splice(index, 1);
                     }
-        
+
                     // Recalculate total after deletion
                     this.onTotalAmountChanged();
                 }
             });
-        
+
             var oHBox = new sap.m.HBox({
                 alignItems: "Center",
                 justifyContent: "End",
                 items: [oInput1, oInput2, oDeleteBtn],
                 class: "sapUiTinyMarginTop"
             });
-        
+
             oItemsVBox.addItem(oHBox);
             oInput2.attachLiveChange(() => {
                 this.onTotalAmountChanged();
             });
         },
-        
+
 
         _recalculateTotal: function () {
             debugger;
@@ -359,6 +362,9 @@ sap.ui.define([
             // Close dialog
             if (this._oValueHelpDialog) {
                 this._oValueHelpDialog.close();
+                this._oValueHelpDialog.destroy(); // Destroy the dialog
+                this._oValueHelpDialog = null;
+                this.onValueHelpAfterClose();
             }
         },
 
@@ -366,6 +372,8 @@ sap.ui.define([
         onValueHelpCancel: function () {
             if (this._oValueHelpDialog) {
                 this._oValueHelpDialog.close();
+                this._oValueHelpDialog.destroy(); // Destroy the dialog
+                this._oValueHelpDialog = null;
             }
         },
 
@@ -435,7 +443,7 @@ sap.ui.define([
 
                             oTable.addColumn(new sap.ui.table.Column({
                                 label: new sap.m.Label({ text: "Value" }),
-                                template: new sap.m.Text({ text: "{TYPE}" })
+                                template: new sap.m.Text({ text: "{VALUE}" })
                             }));
 
                         }
@@ -472,12 +480,16 @@ sap.ui.define([
 
             if (this._oValueHelpDialogCB) {
                 this._oValueHelpDialogCB.close();
+                this._oValueHelpDialogCB.destroy();
+                this._oValueHelpDialogCB = null;
             }
         },
 
         onValueHelpCancelPress: function () {
             if (this._oValueHelpDialogCB) {
                 this._oValueHelpDialogCB.close();
+                this._oValueHelpDialogCB.destroy(); // Destroy the dialog
+                this._oValueHelpDialogCB = null;
             }
         },
 
@@ -563,6 +575,8 @@ sap.ui.define([
 
             if (this._oValueHelpDialogGL) {
                 this._oValueHelpDialogGL.close();
+                this._oValueHelpDialogGL.destroy(); // Destroy the dialog
+                this._oValueHelpDialogGL = null;
             }
         },
 
@@ -582,11 +596,17 @@ sap.ui.define([
         onValueHelpCancelPressGL: function () {
             if (this._oValueHelpDialogGL) {
                 this._oValueHelpDialogGL.close();
+                this._oValueHelpDialogGL.destroy(); // Destroy the dialog
+                this._oValueHelpDialogGL = null;
             }
         },
 
 
         onSubmitCoder: function () {
+            const sComment = this.byId("commentTextArea");
+            if (sComment) {
+                sComment.setValue("")
+            }
             if (!this._oCommentDialog) {
                 this.loadFragment({
                     name: "com.nonpo.vimnonpo.fragments.Approved"
@@ -696,7 +716,7 @@ sap.ui.define([
                     CURRENT_ASSIGNEE_ROLE: oHeadData.APPROVER_ROLE || "",
                     INVOICE_NUMBER: oHeadData.INVOICE_NUMBER || "",
                     INVOICE_DATE: this._formatDate(oHeadData.INVOICE_DATE),
-                    TOTAL_AMOUNT: oHeadData.TOTAL_AMOUNT || "0.00",
+                    TOTAL_AMOUNT: parseInt(oHeadData.TOTAL_AMOUNT || 0.00),
                     EXPENSE_TYPE: oHeadData.EXPENSE_TYPE || "",
                     APPROVED_COMMENT: sComment
                 }],
@@ -706,8 +726,8 @@ sap.ui.define([
                     COST_OBJECT_TYPE: item.CostObjectType || "",
                     COST_OBJECT: item.CostObject || "",
                     GL_ACCOUNT: item.GLAccount || "",
-                    QUANTITY: item.Qty || "0",
-                    PRICE: item.Total || "0"
+                    QUANTITY: parseInt(item.Qty || 0),
+                    PRICE: parseInt(item.Total || 0)
                 })),
                 Attachment: aAttachments.map(att => ({
                     VendorCode: att.VendorCode || "",
