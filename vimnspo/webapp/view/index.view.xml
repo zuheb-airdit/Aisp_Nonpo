@@ -100,7 +100,7 @@
                 backgroundDesign="Solid"
             >
                 <columns>
-                    <Column
+                    <!-- <Column
                         hAlign="Center"
                         demandPopin="true"
                         minScreenWidth="Tablet"
@@ -117,7 +117,7 @@
                             text="Profile Image"
                             wrapping="true"
                         />
-                    </Column>
+                    </Column> -->
                     <Column>
                         <customData>
                             <core:CustomData
@@ -127,7 +127,7 @@
                         </customData>
                         <Text text="Invoice Number" />
                     </Column>
-                    <Column>
+                    <!-- <Column>
                         <customData>
                             <core:CustomData
                                 key="p13nData"
@@ -144,7 +144,7 @@
                             />
                         </customData>
                         <Text text="Supplier Number" />
-                    </Column>
+                    </Column> -->
                      <Column>
                         <customData>
                             <core:CustomData
@@ -189,19 +189,19 @@
                         type="Navigation"
                         press="handleRowClick"
                     >
-                        <Avatar
+                        <!-- <Avatar
                             src="{= ${COMPANY_LOGO} ? ${COMPANY_LOGO} : './Images/Industry.png' }"
                             displaySize="S"
                             initials="{= ${SUPPLIER_NAME} ? ${SUPPLIER_NAME}.substring(0, 2).toUpperCase() : 'AB' }"
                             displayShape="Circle"
                             class="sapUiTinyMarginEnd"
-                        />
+                        /> -->
                         <ObjectStatus
                             text="{INVOICE_NUMBER}"
                             state="Indication05"
                         />
-                        <Text text="{SUPPLIER_NAME}" />
-                        <Text text="{SUPPLIER_NUMBER}" />
+                        <!-- <Text text="{SUPPLIER_NAME}" />
+                        <Text text="{SUPPLIER_NUMBER}" /> -->
                         <Text
                             text="{ path: 'CREATED_ON', formatter: '.formatter.date' }"
                         />

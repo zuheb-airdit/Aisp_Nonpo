@@ -790,7 +790,7 @@ sap.ui.define([
                         SrNo: index + 1,
                         Material: item.description,
                         Qty: item.quantity,
-                        Total: item.totalPrice.replace(/[^\d.-]/g, '') // remove ₹ and commas
+                        Total: item.totalPrice.replace // remove ₹ and commas
                     }));
 
                     // Set data to tableModel
