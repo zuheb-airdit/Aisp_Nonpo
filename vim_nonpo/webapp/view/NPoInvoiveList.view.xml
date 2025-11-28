@@ -218,7 +218,7 @@
                         beforeExport="onBeforeExport"
                         useVariantManagement="true"
                         useTablePersonalisation="true"
-                        header="Pending Requests"
+                        header="Rejected Requests"
                         showRowCount="true"
                         persistencyKey="SmartTableRefApp_Explored"
                         enableAutoBinding="true"

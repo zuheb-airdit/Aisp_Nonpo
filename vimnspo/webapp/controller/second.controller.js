@@ -6,7 +6,7 @@ sap.ui.define(
     "sap/m/MessageBox",
     "sap/base/security/URLListValidator",
   ],
-  function (Controller, JSONModel, MessageToast,MessageBox, URLListValidator) {
+  function (Controller, JSONModel, MessageToast, MessageBox, URLListValidator) {
     "use strict";
 
     return Controller.extend("com.vim.vimnspo.controller.second", {
@@ -92,7 +92,7 @@ sap.ui.define(
         }
       },
 
-      onClearPreview: function(){
+      onClearPreview: function () {
         const iframe = document.getElementById("pdfFrame");
         const uploadSet = this.getView().byId("uploadSet");
         const clearBtn = this.getView().byId("idClearBtn");
@@ -104,11 +104,11 @@ sap.ui.define(
 
       },
 
-      setVisibility: function(){
+      setVisibility: function () {
         debugger;
         const uploadSet = this.getView().byId("uploadSet");
         const clearBtn = this.getView().byId("idClearBtn");
-        
+
 
         uploadSet.removeAllItems(); // Clear uploaded items if any
         uploadSet.setVisible(false);
@@ -120,14 +120,14 @@ sap.ui.define(
         const oView = this.getView();
         const oModel = oView.getModel(); // OData V4 model
         const uploadModel = oView.getModel("uploadModel");
-      
+
         // 1. Read input values
         const invoiceNumber = oView.byId("invoiceNumber").getValue();
         const invoiceDate = oView.byId("invoiceDate").getDateValue();
         const totalAmount = oView.byId("totalAmount").getValue();
         const fileURL = uploadModel.getProperty("/file");
         const fileName = uploadModel.getProperty("/fileName");
-      
+
         // 2. Validate
         if (!invoiceNumber || !invoiceDate || !totalAmount) {
           MessageToast.show("Please fill all required fields.");
@@ -137,9 +137,11 @@ sap.ui.define(
           MessageToast.show("PDF must be uploaded before submission.");
           return;
         }
-      
-        const formattedDate = invoiceDate.toISOString().split("T")[0];
-      
+
+        const formattedDate =
+          invoiceDate.getFullYear() + "-" +
+          String(invoiceDate.getMonth() + 1).padStart(2, '0') + "-" +
+          String(invoiceDate.getDate()).padStart(2, '0');
         // 3. Construct payload
         const payload = {
           action: "CREATE",
@@ -151,7 +153,7 @@ sap.ui.define(
               INVOICE_NUMBER: invoiceNumber,
               INVOICE_DATE: formattedDate,
               TOTAL_AMOUNT: parseInt(totalAmount),
-              SOURCE_TYPE : "02-Portal"
+              SOURCE_TYPE: "02-Portal"
             }
           ],
           NPoVimitem: [],
@@ -164,7 +166,7 @@ sap.ui.define(
             }
           ]
         };
-      
+
         // 4. Confirm before submit
         MessageBox.confirm("Do you want to submit this invoice?", {
           title: "Confirm Submission",
@@ -173,7 +175,7 @@ sap.ui.define(
           onClose: function (oAction) {
             if (oAction === MessageBox.Action.OK) {
               oView.setBusy(true);
-      
+
               oModel.create("/PostNPOVimData", payload, {
                 success: function () {
                   oView.setBusy(false);
@@ -195,41 +197,41 @@ sap.ui.define(
           }.bind(this)
         });
       },
-      
+
       clearForm: function () {
         const oView = this.getView();
-      
+
         // Clear inputs
         oView.byId("invoiceNumber").setValue("");
         oView.byId("invoiceDate").setDateValue(null); // for DatePicker
         oView.byId("totalAmount").setValue("");
-      
+
         // Clear upload model
         const uploadModel = oView.getModel("uploadModel");
         if (uploadModel) {
           uploadModel.setData({ file: "", fileName: "" });
         }
-      
+
         // Clear iframe preview
         const iframe = document.getElementById("pdfFrame");
         if (iframe) {
           iframe.src = "";
         }
-      
+
         // Reset UploadSet if needed
         const uploadSet = oView.byId("uploadSet");
         if (uploadSet) {
           uploadSet.removeAllIncompleteItems();
           uploadSet.setVisible(true);
         }
-      
+
         // Hide clear button
         const clearBtn = oView.byId("idClearBtn");
         if (clearBtn) {
           clearBtn.setVisible(false);
         }
       },
-      
+
 
       onCancel: function () {
         const oRouter = this.getOwnerComponent().getRouter();

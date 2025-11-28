@@ -10,6 +10,7 @@ sap.ui.define([
     return Controller.extend("com.nonpo.vimnonpo.controller.CoderObjPage", {
         onInit() {
             this.aInput2Refs = [];
+
             URLListValidator.add("https", "agpcgpdevqa.blob.core.windows.net");
             let oModel = this.getOwnerComponent().getModel();
             this.getView().setModel(oModel)
@@ -21,11 +22,13 @@ sap.ui.define([
 
         _onRouteMatchedwithoutid: function (oEvent) {
             const oArguments = oEvent.getParameter("arguments");
+            this._resetChargeRowsAndTotal();
             const oEditBtn = this.byId("idEditBtn");
             oEditBtn.setText("Edit")
             const emptyModel = new sap.ui.model.json.JSONModel({ results: [] });
             this.getView().setModel(emptyModel, "tableModel");
             this.reqNumber = oArguments.reqNo;
+
 
             const oSplitterLayout = this.byId("previewSplitterLayout");
             if (oSplitterLayout) {
@@ -93,6 +96,15 @@ sap.ui.define([
             });
         },
 
+        _resetChargeRowsAndTotal: function () {
+            const oVBox = this.byId("itemsVBox");
+            if (oVBox) {
+                oVBox.destroyItems();          // removes all dynamic rows
+            }
+            this.aInput2Refs = [];            // clear the reference array
+            this.byId("totalAmountText").setText("Total Amount: 0");
+        },
+
 
         statusState: function (statusDesc) {
             if (!statusDesc) return "None";
@@ -146,7 +158,7 @@ sap.ui.define([
             const data = oTableModel.getProperty("/results") || [];
 
             data.push({
-                SrNo: String(data.length + 1).padStart(3, "0"),
+                SrNo: String(data.length + 1),
                 Material: "",
                 CostObjectType: "",
                 CostObject: "",
@@ -185,34 +197,34 @@ sap.ui.define([
             this.onTotalAmountChanged();
         },
 
-        onTotalAmountChanged: function () {
-            const oView = this.getView();
-            const oText = oView.byId("totalAmountText");
-            const oModel = oView.getModel("tableModel");
-            const aItems = oModel.getProperty("/results") || [];
-            // Initialize total first
-            let total = 0;
+        // onTotalAmountChanged: function () {
+        //     const oView = this.getView();
+        //     const oText = oView.byId("totalAmountText");
+        //     const oModel = oView.getModel("tableModel");
+        //     const aItems = oModel.getProperty("/results") || [];
+        //     // Initialize total first
+        //     let total = 0;
 
-            // Add values from the model items
-            aItems.forEach(item => {
-                const price = parseFloat(item.Total);
-                if (!isNaN(price)) {
-                    total += price;
-                }
-            });
+        //     // Add values from the model items
+        //     aItems.forEach(item => {
+        //         const price = parseFloat(item.Total);
+        //         if (!isNaN(price)) {
+        //             total += price;
+        //         }
+        //     });
 
-            (this.aInput2Refs || []).forEach(oInput => {
-                const val = parseFloat(oInput.getValue());
-                if (!isNaN(val)) {
-                    total += val;
-                }
-            });
+        //     (this.aInput2Refs || []).forEach(oInput => {
+        //         const val = parseFloat(oInput.getValue());
+        //         if (!isNaN(val)) {
+        //             total += val;
+        //         }
+        //     });
 
-            // Update total text
-            if (oText) {
-                oText.setText("Total Amount: " + total.toFixed(2));
-            }
-        },
+        //     // Update total text
+        //     if (oText) {
+        //         oText.setText("Total Amount: " + total.toFixed(2));
+        //     }
+        // },
         onClickAdd: function () {
             var oItemsVBox = this.byId("itemsVBox");
 
@@ -265,6 +277,29 @@ sap.ui.define([
             oInput2.attachLiveChange(() => {
                 this.onTotalAmountChanged();
             });
+        },
+
+        onTotalAmountChanged: function () {
+            const oTableModel = this.getView().getModel("tableModel");
+            const aItems = oTableModel.getProperty("/results") || [];
+            let total = 0;
+
+            // 1. Sum table items
+            aItems.forEach(item => {
+                total += parseFloat(item.Total) || 0;
+            });
+
+            // 2. Sum dynamic charge rows
+            this.aInput2Refs.forEach(oInput => {
+                const val = parseFloat(oInput.getValue()) || 0;
+                total += val;
+            });
+
+            // 3. Update header total
+            this.getView().getModel("headData").setProperty("/TOTAL_AMOUNT", total.toFixed(2));
+
+            // 4. Update UI text
+            this.byId("totalAmountText").setText(`Total Amount: ₹${total.toFixed(2)}`);
         },
 
 
@@ -666,6 +701,18 @@ sap.ui.define([
             }
         },
 
+        onInvoiceDateChange: function (oEvent) {
+            const oDatePicker = this.byId("invoiceDatePicker");
+            const oDate = oDatePicker.getDateValue(); // null if cleared
+            console.log("tetetet")
+            const oModel = this.getView().getModel("headData");
+
+            // This updates the model immediately
+            oModel.setProperty("/INVOICE_DATE", oDate);
+        },
+
+
+
         _buildFinalPayloadAndSend: function (sComment) {
             const oRouter = this.getOwnerComponent().getRouter();
             const oView = this.getView();
@@ -676,35 +723,116 @@ sap.ui.define([
             const aAttachments = oHeadData.TO_VIM_NON_PO_ATTCHEMENTS?.results || [];
             const oModel = oView.getModel();
 
-            // ✅ 1. Expense Type must be filled
+            /* --------------------------------------------------------------
+               1. Expense Type required
+               -------------------------------------------------------------- */
             if (!oHeadData.EXPENSE_TYPE || oHeadData.EXPENSE_TYPE.trim() === "") {
                 oView.setBusy(false);
                 MessageBox.error("Expense Type is required.");
                 return;
             }
 
-            // ✅ 2. Must have at least one item in the list
+            const headerTotalInput = parseFloat(oHeadData.TOTAL_AMOUNT);
+            if (
+                !oHeadData.TOTAL_AMOUNT ||
+                oHeadData.TOTAL_AMOUNT.trim() === "" ||
+                isNaN(headerTotalInput) ||
+                headerTotalInput <= 0
+            ) {
+                oView.setBusy(false);
+                MessageBox.error("Valid Total Amount is Required");
+                return;
+            }
+
+            if (!oHeadData.INVOICE_DATE) {
+                oView.setBusy(false);
+                MessageBox.error("Invoice Date is required.");
+                return;
+            }
+
+            /* --------------------------------------------------------------
+               2. At least one line item
+               -------------------------------------------------------------- */
             if (!aItems.length) {
                 oView.setBusy(false);
                 MessageBox.error("At least one item must be added in the table.");
                 return;
             }
 
-            // ✅ 3. Total amount in header must match table total
-            let tableTotal = 0;
+            /* --------------------------------------------------------------
+               3. **REAL TOTAL** (table + charge rows) vs header total
+               -------------------------------------------------------------- */
+            // 3-a) table rows
+            let realTotal = 0;
             aItems.forEach(item => {
                 const amount = parseFloat(item.Total || "0");
-                tableTotal += isNaN(amount) ? 0 : amount;
+                realTotal += isNaN(amount) ? 0 : amount;
+            });
+
+            // 3-b) charge rows that live in itemsVBox
+            (this.aInput2Refs || []).forEach(oInput => {
+                const val = parseFloat(oInput.getValue()) || 0;
+                realTotal += val;
             });
 
             const headerTotal = parseFloat(oHeadData.TOTAL_AMOUNT || "0");
-            if (headerTotal !== tableTotal) {
+            if (headerTotal !== realTotal) {
                 oView.setBusy(false);
-                MessageBox.error(`Total Amount mismatch. Table total: ₹${tableTotal}, Header total: ₹${headerTotal}`);
+                MessageBox.error(
+                    `Total Amount mismatch. Bottom total: ₹${realTotal.toFixed(2)}, Header total: ₹${headerTotal}`
+                );
                 return;
             }
 
-            // ✅ Construct payload
+            /* --------------------------------------------------------------
+               4. All mandatory fields in each line item
+               -------------------------------------------------------------- */
+            for (let i = 0; i < aItems.length; i++) {
+                const item = aItems[i];
+                const row = i + 1;
+
+                if (!item.Material?.trim()) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: Material is required.`);
+                    return;
+                }
+                if (!item.CostObjectType?.trim()) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: Cost Object Type is required.`);
+                    return;
+                }
+                if (!item.CostObject?.trim()) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: Cost Object is required.`);
+                    return;
+                }
+                if (!item.GLAccount?.trim()) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: GL Account is required.`);
+                    return;
+                }
+                if (!item.Qty || isNaN(parseInt(item.Qty)) || parseInt(item.Qty) <= 0) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: Valid Quantity is required.`);
+                    return;
+                }
+                const itemTotal = parseFloat(item.Total);
+
+                if (
+                    item.Total == null ||                    // null or undefined
+                    (typeof item.Total === "string" && item.Total.trim() === "") ||
+                    isNaN(itemTotal) ||
+                    itemTotal <= 0
+                ) {
+                    oView.setBusy(false);
+                    MessageBox.error(`Row ${row}: Valid Price is required.`);
+                    return;
+                }
+            }
+
+            /* --------------------------------------------------------------
+               5. Build payload – **use the SAME realTotal** for TOTAL_AMOUNT
+               -------------------------------------------------------------- */
             const payload = {
                 action: "EDIT_RESUBMIT",
                 REQUEST_NO: oHeadData.REQUEST_NO,
@@ -716,18 +844,18 @@ sap.ui.define([
                     CURRENT_ASSIGNEE_ROLE: oHeadData.APPROVER_ROLE || "",
                     INVOICE_NUMBER: oHeadData.INVOICE_NUMBER || "",
                     INVOICE_DATE: this._formatDate(oHeadData.INVOICE_DATE),
-                    TOTAL_AMOUNT: parseInt(oHeadData.TOTAL_AMOUNT || 0.00),
+                    TOTAL_AMOUNT: Math.round(realTotal),               // <-- exact amount
                     EXPENSE_TYPE: oHeadData.EXPENSE_TYPE || "",
                     APPROVED_COMMENT: sComment
                 }],
-                NPoVimitem: aItems.map((item, index) => ({
-                    SR_NO: index + 1,
+                NPoVimitem: aItems.map((item, idx) => ({
+                    SR_NO: idx + 1,
                     MATERIAL: item.Material || "",
                     COST_OBJECT_TYPE: item.CostObjectType || "",
                     COST_OBJECT: item.CostObject || "",
                     GL_ACCOUNT: item.GLAccount || "",
                     QUANTITY: parseInt(item.Qty || 0),
-                    PRICE: parseInt(item.Total || 0)
+                    PRICE: Math.round(parseFloat(item.Total || 0))
                 })),
                 Attachment: aAttachments.map(att => ({
                     VendorCode: att.VendorCode || "",
@@ -737,15 +865,15 @@ sap.ui.define([
                 }))
             };
 
-            // 🔄 Call backend
+            /* --------------------------------------------------------------
+               6. Send to backend
+               -------------------------------------------------------------- */
             oModel.create("/PostNPOVimData", payload, {
                 success: function (res) {
                     oView.setBusy(false);
                     MessageBox.success(res?.PostNPOVimData || "Invoice sent for approval.", {
                         title: "Success",
-                        onClose: function () {
-                            oRouter.navTo("RouteNPoInvoiveList");
-                        }
+                        onClose: () => oRouter.navTo("RouteNPoInvoiveList")
                     });
                 },
                 error: function (err) {
@@ -756,66 +884,212 @@ sap.ui.define([
             });
         },
 
-
         onExtractOCR: function () {
             const oView = this.getView();
-            oView.setBusy(true)
-            const oModel = oView.getModel(); // default ODataModel v2 or v4
-            let hModel = this.getView().getModel("headData")
+            oView.setBusy(true);
+            const oModel = oView.getModel();
+            const hModel = this.getView().getModel("headData");
             const oHeadData = hModel.getData();
             const aAttachments = oHeadData?.TO_VIM_NON_PO_ATTCHEMENTS?.results || [];
 
             if (!aAttachments.length || !aAttachments[0].IMAGEURL) {
                 sap.m.MessageToast.show("No file URL found in attachments.");
-                oView.setBusy(false)
+                oView.setBusy(false);
                 return;
             }
 
             const sFileUrl = aAttachments[0].IMAGEURL;
-
             const oPayload = { fileUrl: sFileUrl };
 
             oModel.create("/triggerOCR", oPayload, {
                 success: function (oData) {
-                    oView.setBusy(false)
+                    oView.setBusy(false);
                     const oOCR = oData?.triggerOCR;
 
-                    if (oOCR?.status !== "SUCCESS" || !oOCR.items?.length) {
-                        sap.m.MessageToast.show("OCR completed, but no items were extracted.");
+                    if (!oOCR || oOCR.status !== "SUCCESS") {
+                        sap.m.MessageToast.show("OCR failed or returned no data.");
                         return;
                     }
 
-                    // Prepare item array for tableModel
-                    const aExtractedItems = oOCR.items.map((item, index) => ({
+                    const aItems = oOCR.items || [];
+                    const fTotalInvoice = parseFloat(oOCR.totalInvoiceAmount) || 0;
+
+                    // === 1. Extract GSTs (handle null, empty, string) ===
+                    const fIGST = parseFloat(oOCR.igst) || 0;
+                    const fCGST = parseFloat(oOCR.cgst) || 0;
+                    const fSGST = parseFloat(oOCR.sgst) || 0;
+                    const fOther = parseFloat(oOCR.other) || 0;
+
+                    const fTotalGST = fIGST + fCGST + fSGST; // Only GSTs
+                    const fGrandTotal = fTotalInvoice; // Should include all
+
+                    // === 2. Fill Table Items ===
+                    const aTableItems = aItems.map((item, index) => ({
                         SrNo: index + 1,
-                        Material: item.description,
-                        Qty: item.quantity,
-                        Total: item.totalPrice.replace // remove ₹ and commas
+                        Material: item.description || "",
+                        CostObjectType: "",
+                        CostObject: "",
+                        GLAccount: "",
+                        Qty: item.quantity ? parseInt(item.quantity, 10) : 1,
+                        Total: item.totalPrice ? parseFloat(item.totalPrice) : 0
                     }));
 
-                    // Set data to tableModel
                     const oTableModel = oView.getModel("tableModel");
-                    oTableModel.setProperty("/results", aExtractedItems);
-                    this.onTotalAmountChanged();
-                    const oSplitterLayout = this.byId("previewSplitterLayout");
-                    if (oSplitterLayout) {
-                        oSplitterLayout.setSize("35%");
+                    oTableModel.setProperty("/results", aTableItems);
+
+                    // === 3. Clear & Add Charge Rows ===
+                    const oItemsVBox = this.byId("itemsVBox");
+                    oItemsVBox.destroyItems();
+                    this.aInput2Refs = [];
+
+                    // Helper to add row
+                    const addCharge = (label, amount) => {
+                        if (amount > 0) {
+                            this._addChargeRow(oItemsVBox, label, amount.toFixed(2));
+                        }
+                    };
+
+                    // Add GSTs
+                    addCharge("IGST", fIGST);
+                    addCharge("CGST", fCGST);
+                    addCharge("SGST", fSGST);
+
+                    // Add Other Charges
+                    addCharge("Other Charges", fOther);
+
+                    // === 4. Show Total GST (Optional: in header or toast) ===
+                    if (fTotalGST > 0) {
+                        sap.m.MessageToast.show(`Total GST: ₹${fTotalGST.toFixed(2)}`);
                     }
+
+                    // === 5. Update Total Amount in Header ===
+                    hModel.setProperty("/TOTAL_AMOUNT", fGrandTotal.toFixed(2));
+
+                    // === 6. Trigger total recalculation ===
+                    this.onTotalAmountChanged();
+
+                    // === 7. PDF Preview ===
+                    const oSplitterLayout = this.byId("previewSplitterLayout");
+                    if (oSplitterLayout) oSplitterLayout.setSize("35%");
 
                     const iframe = document.getElementById("pdfFrame");
-                    if (iframe) {
-                        iframe.src = sFileUrl; // use the same file URL we passed to OCR
-                    }
+                    if (iframe) iframe.src = sFileUrl;
 
-                    sap.m.MessageToast.show("OCR items extracted and added to the table.");
+                    sap.m.MessageToast.show("OCR extracted: items + all GSTs + charges added.");
                 }.bind(this),
                 error: function (err) {
-                    oView.setBusy(false)
+                    oView.setBusy(false);
                     console.error("OCR call failed:", err);
                     sap.m.MessageBox.error("Failed to extract OCR data.");
                 }
             });
         },
+
+        _addChargeRow: function (oVBox, sLabel, sValue) {
+            const oInput1 = new sap.m.Input({
+                value: sLabel,
+                editable: false,
+                width: "8rem",
+                layoutData: new sap.m.FlexItemData({ styleClass: "sapUiTinyMarginEnd" })
+            });
+
+            const oInput2 = new sap.m.Input({
+                value: sValue,
+                type: "Number",
+                width: "6rem",
+                layoutData: new sap.m.FlexItemData()
+            });
+
+            // Track for total calculation
+            this.aInput2Refs.push(oInput2);
+
+            const oDeleteBtn = new sap.m.Button({
+                icon: "sap-icon://delete",
+                type: "Transparent",
+                press: () => {
+                    oVBox.removeItem(oHBox);
+                    const index = this.aInput2Refs.indexOf(oInput2);
+                    if (index !== -1) this.aInput2Refs.splice(index, 1);
+                    this.onTotalAmountChanged();
+                }
+            });
+
+            const oHBox = new sap.m.HBox({
+                alignItems: "Center",
+                justifyContent: "End",
+                items: [oInput1, oInput2, oDeleteBtn],
+                class: "sapUiTinyMarginTop"
+            });
+
+            oVBox.addItem(oHBox);
+
+            // Live update on change
+            oInput2.attachLiveChange(() => {
+                this.onTotalAmountChanged();
+            });
+        },
+
+
+
+        // onExtractOCR: function () {
+        //     const oView = this.getView();
+        //     oView.setBusy(true)
+        //     const oModel = oView.getModel(); // default ODataModel v2 or v4
+        //     let hModel = this.getView().getModel("headData")
+        //     const oHeadData = hModel.getData();
+        //     const aAttachments = oHeadData?.TO_VIM_NON_PO_ATTCHEMENTS?.results || [];
+
+        //     if (!aAttachments.length || !aAttachments[0].IMAGEURL) {
+        //         sap.m.MessageToast.show("No file URL found in attachments.");
+        //         oView.setBusy(false)
+        //         return;
+        //     }
+
+        //     const sFileUrl = aAttachments[0].IMAGEURL;
+
+        //     const oPayload = { fileUrl: sFileUrl };
+
+        //     oModel.create("/triggerOCR", oPayload, {
+        //         success: function (oData) {
+        //             oView.setBusy(false)
+        //             const oOCR = oData?.triggerOCR;
+
+        //             // if (oOCR?.status !== "SUCCESS" || !oOCR.items?.length) {
+        //             //     sap.m.MessageToast.show("OCR completed, but no items were extracted.");
+        //             //     return;
+        //             // }
+
+        //             // Prepare item array for tableModel
+        //             const aExtractedItems = oOCR.items.map((item, index) => ({
+        //                 SrNo: index + 1,
+        //                 Material: item.description,
+        //                 Qty: item.quantity,
+        //                 Total: item.totalPrice // remove ₹ and commas
+        //             }));
+
+        //             // Set data to tableModel
+        //             const oTableModel = oView.getModel("tableModel");
+        //             oTableModel.setProperty("/results", aExtractedItems);
+        //             this.onTotalAmountChanged();
+        //             const oSplitterLayout = this.byId("previewSplitterLayout");
+        //             if (oSplitterLayout) {
+        //                 oSplitterLayout.setSize("35%");
+        //             }
+
+        //             const iframe = document.getElementById("pdfFrame");
+        //             if (iframe) {
+        //                 iframe.src = sFileUrl; // use the same file URL we passed to OCR
+        //             }
+
+        //             sap.m.MessageToast.show("OCR items extracted and added to the table.");
+        //         }.bind(this),
+        //         error: function (err) {
+        //             oView.setBusy(false)
+        //             console.error("OCR call failed:", err);
+        //             sap.m.MessageBox.error("Failed to extract OCR data.");
+        //         }
+        //     });
+        // },
 
 
         _formatDate: function (dateInput) {

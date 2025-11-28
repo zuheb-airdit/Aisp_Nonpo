@@ -146,13 +146,28 @@
                                         text="{path: 'headData>/INVOICE_DATE', formatter: '.formatDate'}"
                                         visible="{= !${headData>/editable} }"
                                     />
-                                    <DatePicker
+                                   <DatePicker
+    id="invoiceDatePicker"
+    value="{
+        path: 'headData>/INVOICE_DATE',
+        type: 'sap.ui.model.type.Date',
+        formatOptions: { pattern: 'dd-MM-yyyy' },
+        constraints: { }
+    }"
+    displayFormat="dd-MM-yyyy"
+    valueFormat="yyyy-MM-dd"
+    visible="{headData>/editable}"
+    width="8rem"
+    change="onInvoiceDateChange" />
+                                    <!-- <DatePicker
                                         value="{path: 'headData>/INVOICE_DATE', formatter: '.formatDate'}"
                                         valueFormat="yyyy-MM-dd"
+                                        id="invoiceDatePicker"
                                         displayFormat="long"
                                         visible="{headData>/editable}"
                                         width="8rem"
-                                    />
+                                        change="onInvoiceDateChange"
+                                    /> -->
                                 </HBox>
                             </VBox>
 
@@ -161,7 +176,7 @@
                             >
                                 <HBox class="sapUiTinyMarginBottom">
                                     <Label
-                                        text="T Amount:"
+                                        text="Total Amount:"
                                         class="sapUiTinyMarginEnd sapUiTinyMarginTop"
                                     />
                                     <VBox>
@@ -197,6 +212,7 @@
                                     <Label
                                         text="Expense Type:"
                                         class="sapUiTinyMarginEnd sapUiTinyMarginTop "
+                                        required="true"
                                     />
                                     <Input
                                         value="{headData>/EXPENSE_TYPE}"
